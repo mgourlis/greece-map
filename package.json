@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mgourlis/greece-map/issues"
   },
-  "homepage": "https://github.com/mgourlis/greece-map#readme"
+  "homepage": "https://github.com/mgourlis/greece-map#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
