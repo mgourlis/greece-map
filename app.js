@@ -9,6 +9,8 @@ const port = 3000
 app.get('/api', (req, res) => res.send('Hello World!'))
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.get('/', (req, res) => res.send('nothing here'))
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
