@@ -1,35 +1,4 @@
 
-var rsr = Raphael('map', '1049', '886');
-rsr.setViewBox(0, 0, '1049', '886', true);
-rsr.setSize('100%', '100%');
-
-const p = Promise.all([axios.get('/paths.json'), axios.get('/regions.json')])
-
-p.then((resp) => {
-    const paths = R.map(a => rsr.path(a), resp[0].data)
-
-    const regionData = resp[1].data
-    const regions = R.map(rsr.set)(regionData)
-    const regionColors = generateColors(1, 0.4, regions.length);
-
-    regions.forEach((r, i) => {
-        const relativePaths = regionData[i].path.map(el => paths[el])
-        r.push(...relativePaths)
-    })
-
-    regions.forEach(
-        (r, i) => r.attr({
-            fill: regionColors[i],
-            stroke: 'rgb(255,255,255)',
-            'stroke-width': '1',
-            'stroke-opacity': '1',
-            'stroke-linejoin': 'round'
-        }).hover(
-            () => { r.attr({ opacity: '0.7', 'stroke-width': '2' }) },
-            () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
-        )
-    )
-})
 
 function generateColors(saturation, lightness, amount) {
     let rgbColors = [];
@@ -58,3 +27,42 @@ function hslToRgb(h, s, l) {
     let f = (n, k = (n + h / 30) % 12) => l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
     return { 'red': f(0) * 255, 'green': f(8) * 255, 'blue': f(4) * 255 };
 }
+
+const drawMap = function (div, x, y, path, onclick) {
+    const rsr = Raphael(div, x, y);
+    rsr.setViewBox(0, 0, x, y, true);
+    rsr.setSize('100%', '100%');
+
+    const p = axios.get(path)
+
+    p.then((resp) => {
+        const paths = R.map(a => rsr.path(a), resp.data.paths)
+
+        const regionData = resp.data.regions
+        const regions = R.map(rsr.set)(regionData)
+        const regionColors = generateColors(1, 0.4, regions.length);
+
+        regions.forEach((r, i) => {
+            const relativePaths = regionData[i].path.map(el => paths[el])
+            r.push(...relativePaths)
+        })
+
+        regions.forEach(
+            (r, i) => r.attr({
+                fill: regionColors[i],
+                stroke: 'rgb(255,255,255)',
+                'stroke-width': '1',
+                'stroke-opacity': '1',
+                'stroke-linejoin': 'round'
+            }).hover(
+                () => { r.attr({ opacity: '0.7', 'stroke-width': '2' }) },
+                () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
+            ).click((e, x, y) => onclick(i, e, x, y) )
+        )
+    })
+}
+
+drawMap('map', 1049, 886, '/paths.json', (region) => {
+    console.log(region)
+})
+
