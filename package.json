@@ -18,7 +18,11 @@
   "homepage": "https://github.com/mgourlis/greece-map#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "eslint": "^5.12.1",
     "express": "^4.16.4",
-    "ramda": "^0.26.1"
+    "json-xml": "^1.0.9",
+    "ramda": "^0.26.1",
+    "svgson": "^3.0.0",
+    "xml-js": "^1.6.9"
   }
 }
