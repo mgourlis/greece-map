@@ -1,10 +1,15 @@
 {
+    "svgDimensions": {
+        "width": 1596,
+        "height": 1116
+    },
     "id": "kriti",
     "attributes": {
-        "stroke": "none",
-        "fill": "rgb(115,159,155)",
+        "stroke": "rgb(255,255,255)",
+        "fill": "rgb(137,51,229)",
         "stroke-linejoin": "round",
-        "stroke-width": "0.26"
+        "stroke-width": "1",
+        "stroke-opacity": "1"
     },
     "regions": [
         {
