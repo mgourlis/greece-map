@@ -30,21 +30,21 @@ function hslToRgb(h, s, l) {
     return { 'red': f(0) * 255, 'green': f(8) * 255, 'blue': f(4) * 255 }
 }
 
-const drawMap = function (div, x, y, path, onclick) {
-    const rsr = Raphael(div, x, y)
-    rsr.setViewBox(0, 0, x, y, true)
-    rsr.setSize('100%', '100%')
-
+const drawMap = function (div, path, onclick) {
     const p = axios.get(path)
 
     p.then((resp) => {
-        const id = resp.data.id
+        const data = resp.data
 
-        const regions = resp.data.regions.map(rsr.set)
+        const canvas = Raphael(div, data.svgDimensions.width, data.svgDimensions.height)
+        canvas.setViewBox(0, 0, data.svgDimensions.width, data.svgDimensions.height, true)
+        canvas.setSize('100%', '100%')
+
+        const regions = data.regions.map(canvas.set)
         const regionColors = generateColors(1, 0.4, regions.length)
 
         regions.forEach((r, i) => {
-            const relativePaths = resp.data.regions[i].path.map(a => rsr.path(a))
+            const relativePaths = data.regions[i].path.map(a => canvas.path(a))
             r.push(...relativePaths)
         })
 
@@ -58,12 +58,23 @@ const drawMap = function (div, x, y, path, onclick) {
             }).hover(
                 () => { r.attr({ opacity: '0.7', 'stroke-width': '2' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
-            ).click((e, x, y) => onclick(i, e, x, y) )
+            ).click((e) => onclick(new regionObject(canvas,data.regions[i].id,data.regions[i].name, `/${data.regions[i].id}.json`)))
         )
     })
 }
 
-drawMap('map', 1049, 886, '/kriti.json', (region) => {
-    console.log(region)
+drawMap('map', '/regions.json', (regionObject) => {
+    console.log(regionObject.id);
+    regionObject.canvas.clear();
+    drawMap('map', regionObject.jsonFilePath, (regionObject) => {
+        console.log(regionObject.id);
+    });
 })
+
+function regionObject(canvas, id, name, jsonFilePath){
+    this.canvas = canvas
+    this.id = id
+    this.name = name
+    this.jsonFilePath = jsonFilePath
+}
 
