@@ -1,6 +1,4 @@
-
-
-/*global axios R Raphael*/
+/*global axios Raphael*/
 
 function generateColors(saturation, lightness, amount) {
     let rgbColors = []
@@ -30,13 +28,13 @@ function hslToRgb(h, s, l) {
     return { 'red': f(0) * 255, 'green': f(8) * 255, 'blue': f(4) * 255 }
 }
 
-const drawMap = function (div, path, onclick) {
+const drawMap = function (canvas, path, onclick) {
     const p = axios.get(path)
 
     p.then((resp) => {
         const data = resp.data
 
-        const canvas = Raphael(div, data.svgDimensions.width, data.svgDimensions.height)
+        canvas.setSize(data.svgDimensions.width, data.svgDimensions.height)
         canvas.setViewBox(0, 0, data.svgDimensions.width, data.svgDimensions.height, true)
         canvas.setSize('100%', '100%')
 
@@ -58,23 +56,22 @@ const drawMap = function (div, path, onclick) {
             }).hover(
                 () => { r.attr({ opacity: '0.7', 'stroke-width': '2' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
-            ).click((e) => onclick(new regionObject(canvas,data.regions[i].id,data.regions[i].name, `/${data.regions[i].id}.json`)))
+            ).click((e) => onclick({
+                id: data.regions[i].id,
+                name: data.regions[i].name,
+                jsonFilePath: `/${data.regions[i].id}.json`
+            }))
         )
     })
 }
 
-drawMap('map', '/regions.json', (regionObject) => {
+const canvas = Raphael('map')
+drawMap(canvas, '/regions.json', (regionObject) => {
     console.log(regionObject.id);
-    regionObject.canvas.clear();
-    drawMap('map', regionObject.jsonFilePath, (regionObject) => {
+    canvas.clear();
+    drawMap(canvas, regionObject.jsonFilePath, (regionObject) => {
         console.log(regionObject.id);
     });
 })
 
-function regionObject(canvas, id, name, jsonFilePath){
-    this.canvas = canvas
-    this.id = id
-    this.name = name
-    this.jsonFilePath = jsonFilePath
-}
 
