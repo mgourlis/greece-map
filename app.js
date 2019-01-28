@@ -10,6 +10,6 @@ app.get('/api', (req, res) => res.send('Hello World!'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`listening on port ${port}!`));
 
 
