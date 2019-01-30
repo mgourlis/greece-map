@@ -12,7 +12,7 @@ function generateColors(saturation, lightness, amount) {
 
 function generateHslaColors(saturation, lightness, amount) {
     let colors = []
-    let huedelta = Math.trunc(360 / amount);
+    let huedelta = Math.trunc(360 / amount)
 
     for (let i = 0; i < amount; i++) {
         let hue = i * huedelta
@@ -71,11 +71,11 @@ const drawMap = function (canvas, path, onclick) {
 
 const canvas = Raphael('map')
 drawMap(canvas, '/regions.json', (regionObject) => {
-    console.log(regionObject.id);
-    canvas.clear();
+    console.log(regionObject.id)
+    canvas.clear()
     drawMap(canvas, regionObject.jsonFilePath, (regionObject) => {
-        console.log(regionObject.id);
-    });
+        console.log(regionObject.id)
+    })
 })
 
 
