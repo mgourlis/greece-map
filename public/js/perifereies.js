@@ -12,7 +12,7 @@ function generateColors(saturation, lightness, amount) {
 
 function generateHslaColors(saturation, lightness, amount) {
     let colors = []
-    let huedelta = Math.trunc(360 / amount)
+    let huedelta = Math.trunc(360 / amount);
 
     for (let i = 0; i < amount; i++) {
         let hue = i * huedelta
