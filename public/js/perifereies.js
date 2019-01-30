@@ -44,22 +44,26 @@ const drawMap = function (canvas, path, onclick) {
         regions.forEach((r, i) => {
             const relativePaths = data.regions[i].path.map(a => canvas.path(a))
             r.push(...relativePaths)
+            delete data.regions[i].path
+            r.info = data.regions[i]
+            r.color = regionColors[i]
         })
 
         regions.forEach(
-            (r, i) => r.attr({
-                fill: regionColors[i],
+            r => r.attr({
+                fill: r.color,
                 stroke: 'rgb(255,255,255)',
                 'stroke-width': '1',
                 'stroke-opacity': '1',
-                'stroke-linejoin': 'round'
+                'stroke-linejoin': 'round',
+                title: r.info.name || r.info.id || ''
             }).hover(
-                () => { r.attr({ opacity: '0.7', 'stroke-width': '2' }) },
+                () => { r.attr({ opacity: '0.7', 'stroke-width': '2', cursor: 'pointer' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
             ).click((e) => onclick({
-                id: data.regions[i].id,
-                name: data.regions[i].name,
-                jsonFilePath: `/${data.regions[i].id}.json`
+                id: r.info.id,
+                name: r.info.name,
+                jsonFilePath: r.info.id + '.json'
             }))
         )
     })
