@@ -75,6 +75,11 @@ drawMap(canvas, '/regions.json', (regionObject) => {
     canvas.clear()
     drawMap(canvas, regionObject.jsonFilePath, (regionObject) => {
         console.log(regionObject.id)
+        canvas.clear()
+        drawMap(canvas, 'dimoi/' + regionObject.jsonFilePath, (regionObject) => {
+            console.log(regionObject.id)
+        })
+
     })
 })
 
