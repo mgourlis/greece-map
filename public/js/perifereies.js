@@ -60,7 +60,7 @@ const drawMap = function (canvas, path, onclick) {
             }).hover(
                 () => { r.attr({ opacity: '0.7', 'stroke-width': '2', cursor: 'pointer' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
-            ).click((e) => onclick({
+            ).click(() => onclick({
                 id: r.info.id,
                 name: r.info.name,
                 jsonFilePath: r.info.id + '.json'
