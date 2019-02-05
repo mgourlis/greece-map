@@ -4,6 +4,7 @@
         "height": "886"
     },
     "id": "dytiki-ellada",
+    "parent": "regions",
     "attributes": {
         "stroke": "none",
         "fill": "rgb(91,120,164)",

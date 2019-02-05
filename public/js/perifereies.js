@@ -1,4 +1,4 @@
-/*global axios Raphael*/
+/*global  $ axios Raphael*/
 
 function generateColors(saturation, lightness, amount) {
     let rgbColors = []
@@ -28,10 +28,12 @@ function hslToRgb(h, s, l) {
     return { 'red': f(0) * 255, 'green': f(8) * 255, 'blue': f(4) * 255 }
 }
 
-const drawMap = function (canvas, path, onclick) {
-    const p = axios.get(path)
+const drawMap = async function (canvas, path, onclick) {
+    try {
+        const resp = await axios.get(path)
 
-    p.then((resp) => {
+        canvas.clear()
+        
         const data = resp.data
 
         canvas.setSize(data.svgDimensions.width, data.svgDimensions.height)
@@ -63,24 +65,32 @@ const drawMap = function (canvas, path, onclick) {
             ).click(() => onclick({
                 id: r.info.id,
                 name: r.info.name,
-                jsonFilePath: r.info.id + '.json'
+                jsonFilePathDown: r.info.id + '.json',
+                jsonFilePathCurrent: data.id + '.json'
             }))
         )
-    })
+    } catch (error) {
+        if (error.response.status === 404){
+            console.log('error - console')
+        }
+    }
+
 }
 
 const canvas = Raphael('map')
-drawMap(canvas, '/regions.json', (regionObject) => {
-    console.log(regionObject.id)
-    canvas.clear()
-    drawMap(canvas, regionObject.jsonFilePath, (regionObject) => {
-        console.log(regionObject.id)
-        canvas.clear()
-        drawMap(canvas, 'dimoi/' + regionObject.jsonFilePath, (regionObject) => {
-            console.log(regionObject.id)
-        })
 
+function moveInHierarchy(regionObject) {
+    const moveStack = ['regions.json']
+    console.log(regionObject.id)
+    drawMap(canvas, regionObject.jsonFilePathDown, (regionObject) => moveInHierarchy(regionObject))
+    moveStack.push(regionObject.jsonFilePathCurrent)
+    $('#back').html('<a href="#">Πίσω</a>').off('click').click(() => {
+        drawMap(canvas, moveStack.pop(), (regionObject) => moveInHierarchy(regionObject))
+        if (moveStack.length === 0) moveStack.push('regions.json')
     })
-})
+}
+
+
+drawMap(canvas, '/regions.json', moveInHierarchy)
 
 
