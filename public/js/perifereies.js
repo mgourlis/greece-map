@@ -33,10 +33,10 @@ const drawMap = async function (canvas, path, onclick) {
         const resp = await axios.get(path)
 
         canvas.clear()
-
         const data = resp.data
 
         canvas.setSize(data.svgDimensions.width, data.svgDimensions.height)
+        // canvas.setViewBox(500, 500, 2000, 1000, true)
         canvas.setViewBox(0, 0, data.svgDimensions.width, data.svgDimensions.height, true)
         canvas.setSize('100%', '100%')
 
@@ -83,18 +83,20 @@ function moveInHierarchy(regionObject) {
         showData(regionObject)
     })
     moveStack.push(regionObject.id)
-    moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
-        moveStack.pop()
-        const path = moveStack.pop()
-        regionObject.id = path
-        moveInHierarchy(regionObject)
-        showData(regionObject)
-    }) : $('#back').addClass('disabled')
+    moveStack.length > 1 ?
+        $('#back').removeClass('disabled btn-secondary').addClass('btn-primary').off('click').click(() => {
+            moveStack.pop()
+            const path = moveStack.pop()
+            regionObject.id = path
+            moveInHierarchy(regionObject)
+            showData(regionObject)
+        })
+        : $('#back').addClass('disabled btn-secondary').removeClass('btn-primary')
 }
 
 const moveStack = []
-moveInHierarchy({id: 'regions'})
-showData({id: 'regions'})
+moveInHierarchy({ id: 'regions' })
+showData({ id: 'regions' })
 
 
 
