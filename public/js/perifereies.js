@@ -33,7 +33,7 @@ const drawMap = async function (canvas, path, onclick) {
         const resp = await axios.get(path)
 
         canvas.clear()
-        
+
         const data = resp.data
 
         canvas.setSize(data.svgDimensions.width, data.svgDimensions.height)
@@ -63,37 +63,39 @@ const drawMap = async function (canvas, path, onclick) {
                 () => { r.attr({ opacity: '0.7', 'stroke-width': '2', cursor: 'pointer' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
             ).click(() => onclick({
-                id: r.info.id,
-                name: r.info.name,
-                jsonFilePathDown: r.info.id + '.json',
-                jsonFilePathCurrent: data.id + '.json'
+                id: r.info.id
             }))
         )
     } catch (error) {
-        if (error.response.status === 404){
+        if (error.response.status === 404) {
             console.log('error - console')
         }
     }
-
 }
 
 const canvas = Raphael('map')
-
-const moveStack = []
-
+const showData = (regionObject) => {
+    console.log(regionObject)
+}
 function moveInHierarchy(regionObject) {
-    if(moveStack.length === 0) moveStack.push('regions.json')
-    console.log(regionObject.id)
-    drawMap(canvas, regionObject.jsonFilePathDown, (regionObject) => moveInHierarchy(regionObject))
-    moveStack.push(regionObject.jsonFilePathCurrent)
-    $('#back').html('<a href="#">Πίσω</a>').off('click').click(() => {
-        drawMap(canvas, moveStack.pop(), (regionObject) => moveInHierarchy(regionObject))
-        console.log(regionObject.id)
-        if (moveStack.length === 0) moveStack.push('regions.json')
+    drawMap(canvas, regionObject.id + '.json', (regionObject) => {
+        moveStack.length < 3 && moveInHierarchy(regionObject)
+        showData(regionObject)
     })
+    moveStack.push(regionObject.id)
+    moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
+        moveStack.pop()
+        const path = moveStack.pop()
+        regionObject.id = path
+        moveInHierarchy(regionObject)
+        showData(regionObject)
+    }) : $('#back').addClass('disabled')
 }
 
+const moveStack = []
+moveInHierarchy({id: 'regions'})
+showData({id: 'regions'})
 
-drawMap(canvas, '/regions.json', moveInHierarchy)
+
 
 
