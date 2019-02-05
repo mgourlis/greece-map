@@ -79,13 +79,16 @@ const drawMap = async function (canvas, path, onclick) {
 
 const canvas = Raphael('map')
 
+const moveStack = []
+
 function moveInHierarchy(regionObject) {
-    const moveStack = ['regions.json']
+    if(moveStack.length === 0) moveStack.push('regions.json')
     console.log(regionObject.id)
     drawMap(canvas, regionObject.jsonFilePathDown, (regionObject) => moveInHierarchy(regionObject))
     moveStack.push(regionObject.jsonFilePathCurrent)
     $('#back').html('<a href="#">Πίσω</a>').off('click').click(() => {
         drawMap(canvas, moveStack.pop(), (regionObject) => moveInHierarchy(regionObject))
+        console.log(regionObject.id)
         if (moveStack.length === 0) moveStack.push('regions.json')
     })
 }
