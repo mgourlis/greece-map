@@ -29,14 +29,14 @@ function hslToRgb(h, s, l) {
 }
 
 const drawMap = async function (canvas, path, onclick) {
-    try {
+    if (path !== null) {
         const resp = await axios.get(path)
 
         canvas.clear()
+
         const data = resp.data
 
         canvas.setSize(data.svgDimensions.width, data.svgDimensions.height)
-        // canvas.setViewBox(500, 500, 2000, 1000, true)
         canvas.setViewBox(0, 0, data.svgDimensions.width, data.svgDimensions.height, true)
         canvas.setSize('100%', '100%')
 
@@ -63,13 +63,10 @@ const drawMap = async function (canvas, path, onclick) {
                 () => { r.attr({ opacity: '0.7', 'stroke-width': '2', cursor: 'pointer' }) },
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
             ).click(() => onclick({
-                id: r.info.id
+                id: r.info.id,
+                region: r
             }))
         )
-    } catch (error) {
-        if (error.response.status === 404) {
-            console.log('error - console')
-        }
     }
 }
 
@@ -77,25 +74,46 @@ const canvas = Raphael('map')
 const showData = (regionObject) => {
     console.log(regionObject)
 }
+
 function moveInHierarchy(regionObject) {
-    drawMap(canvas, regionObject.id + '.json', (regionObject) => {
-        moveStack.length < 3 && moveInHierarchy(regionObject)
-        showData(regionObject)
-    })
-    moveStack.push(regionObject.id)
-    moveStack.length > 1 ?
-        $('#back').removeClass('disabled btn-secondary').addClass('btn-primary').off('click').click(() => {
-            moveStack.pop()
-            const path = moveStack.pop()
-            regionObject.id = path
-            moveInHierarchy(regionObject)
+    var timeoutMs = 0
+    if (regionObject.region !== null) {
+        timeoutMs = 1500
+        var elCenterX = regionObject.region.getBBox(true).x2 - (regionObject.region.getBBox(true).width / 2)
+        var elCenterY = regionObject.region.getBBox(true).y2 - (regionObject.region.getBBox(true).height / 2)
+        var tMoveX = (canvas._viewBox[2] / 2) - elCenterX
+        var tMoveY = (canvas._viewBox[3] / 2) - elCenterY
+        regionObject.region.toFront()
+        canvas.forEach((r) => {
+            r.attr({ opacity: '0.3', title: '' }).unclick().unhover()
+        }, canvas)
+        regionObject.region.toFront().unclick().unhover()
+            .attr({ opacity: '1', 'stroke-width': '0,5', })
+            .animate({
+                transform: 't' + tMoveX + ',' + tMoveY + 's1.5,1.5,' + elCenterX + ',' + elCenterY
+            }, timeoutMs, 'linear')
+    }
+    setTimeout(() => {
+        var path = null
+        moveStack.length < 4 && (path = regionObject.id + '.json')
+        drawMap(canvas, path, (regionObject) => {
+            moveStack.length < 4 && moveInHierarchy(regionObject)
             showData(regionObject)
         })
-        : $('#back').addClass('disabled btn-secondary').removeClass('btn-primary')
+    }, timeoutMs)
+    moveStack.push(regionObject.id)
+    moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
+        moveStack.pop()
+        const path = moveStack.pop()
+        regionObject.id = path
+        regionObject.region = null
+        moveInHierarchy(regionObject)
+        showData(regionObject)
+    }) : $('#back').addClass('disabled')
 }
 
 const moveStack = []
-moveInHierarchy({ id: 'regions' })
+moveInHierarchy({ id: 'regions', region: null })
 showData({ id: 'regions' })
 
 
