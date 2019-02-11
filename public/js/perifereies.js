@@ -73,31 +73,36 @@ const drawMap = async function (canvas, path, onclick) {
 const canvas = Raphael('map')
 const showData = (regionObject) => {
     console.log(regionObject)
+    $('#region-title').html()
 }
 
-function moveInHierarchy(regionObject) {
+function animateTransition(region, timeoutMs) {
+    var elCenterX = region.getBBox(true).x2 - (region.getBBox(true).width / 2)
+    var elCenterY = region.getBBox(true).y2 - (region.getBBox(true).height / 2)
+    var tMoveX = (canvas._viewBox[2] / 2) - elCenterX
+    var tMoveY = (canvas._viewBox[3] / 2) - elCenterY
+    region.toFront()
+    canvas.forEach((r) => {
+        r.attr({ opacity: '0.3', title: '' }).unclick().unhover()
+    }, canvas)
+    region.toFront().unclick().unhover()
+        .attr({ opacity: '1', 'stroke-width': '0,5', })
+        .animate({
+            transform: 't' + tMoveX + ',' + tMoveY + 's1.5,1.5,' + elCenterX + ',' + elCenterY
+        }, timeoutMs, 'linear')
+}
+
+function moveInHierarchy(regionObject, enableAnimation) {
     var timeoutMs = 0
-    if (regionObject.region !== null) {
+    if (regionObject.region !== null && enableAnimation) {
         timeoutMs = 1500
-        var elCenterX = regionObject.region.getBBox(true).x2 - (regionObject.region.getBBox(true).width / 2)
-        var elCenterY = regionObject.region.getBBox(true).y2 - (regionObject.region.getBBox(true).height / 2)
-        var tMoveX = (canvas._viewBox[2] / 2) - elCenterX
-        var tMoveY = (canvas._viewBox[3] / 2) - elCenterY
-        regionObject.region.toFront()
-        canvas.forEach((r) => {
-            r.attr({ opacity: '0.3', title: '' }).unclick().unhover()
-        }, canvas)
-        regionObject.region.toFront().unclick().unhover()
-            .attr({ opacity: '1', 'stroke-width': '0,5', })
-            .animate({
-                transform: 't' + tMoveX + ',' + tMoveY + 's1.5,1.5,' + elCenterX + ',' + elCenterY
-            }, timeoutMs, 'linear')
+        animateTransition(regionObject.region, timeoutMs)
     }
     setTimeout(() => {
         var path = null
         moveStack.length < 4 && (path = regionObject.id + '.json')
         drawMap(canvas, path, (regionObject) => {
-            moveStack.length < 4 && moveInHierarchy(regionObject)
+            moveStack.length < 4 && moveInHierarchy(regionObject, enableAnimation)
             showData(regionObject)
         })
     }, timeoutMs)
@@ -107,14 +112,15 @@ function moveInHierarchy(regionObject) {
         const path = moveStack.pop()
         regionObject.id = path
         regionObject.region = null
-        moveInHierarchy(regionObject)
+        moveInHierarchy(regionObject, enableAnimation)
         showData(regionObject)
     }) : $('#back').addClass('disabled')
 }
 
 const moveStack = []
-moveInHierarchy({ id: 'regions', region: null })
-showData({ id: 'regions' })
+const animationsEnabled = true
+moveInHierarchy({ id: 'regions', name: 'Επικράτεια', region: null }, animationsEnabled)
+showData({ id: 'regions', name: 'Επικράτεια' })
 
 
 
