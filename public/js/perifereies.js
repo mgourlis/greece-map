@@ -1,5 +1,11 @@
 /*global  $ axios Raphael*/
 
+/* ---------SETTINGS--------- */
+const maxAllowdedLevel = 4
+const animationsEnabled = true
+/* -------------------------- */
+
+
 function generateColors(saturation, lightness, amount) {
     let rgbColors = []
     let hslColors = generateHslaColors(saturation, lightness, amount)
@@ -64,6 +70,7 @@ const drawMap = async function (canvas, path, onclick) {
                 () => { r.attr({ opacity: '1', 'stroke-width': '1' }) }
             ).click(() => onclick({
                 id: r.info.id,
+                name: r.info.name,
                 region: r
             }))
         )
@@ -71,9 +78,21 @@ const drawMap = async function (canvas, path, onclick) {
 }
 
 const canvas = Raphael('map')
-const showData = (regionObject) => {
+const showTitle = (regionObject) => {
     console.log(regionObject)
-    $('#region-title').html()
+    $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
+}
+
+function getRegionPrefix(id){
+    let level = id.split('-')[0]
+    if(level === '1')
+        return 'Περιφέρεια'
+    else if( level === '2')
+        return 'Περιφερειακή Ενότητα'
+    else if( level === '3')
+        return 'Δήμος'
+    else
+        return 'Επικράτεια'
 }
 
 function animateTransition(region, timeoutMs) {
@@ -92,7 +111,7 @@ function animateTransition(region, timeoutMs) {
         }, timeoutMs, 'linear')
 }
 
-function moveInHierarchy(regionObject, enableAnimation) {
+function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
     var timeoutMs = 0
     if (regionObject.region !== null && enableAnimation) {
         timeoutMs = 1500
@@ -100,27 +119,28 @@ function moveInHierarchy(regionObject, enableAnimation) {
     }
     setTimeout(() => {
         var path = null
-        moveStack.length < 4 && (path = regionObject.id + '.json')
+        moveStack.length < maxAllowdedLevel && (path = regionObject.id + '.json')
         drawMap(canvas, path, (regionObject) => {
-            moveStack.length < 4 && moveInHierarchy(regionObject, enableAnimation)
-            showData(regionObject)
+            moveStack.length < maxAllowdedLevel && moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
+            showTitle(regionObject)
         })
     }, timeoutMs)
-    moveStack.push(regionObject.id)
+    moveStack.push(regionObject)
     moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
         moveStack.pop()
-        const path = moveStack.pop()
+        const prevRegionObject = moveStack.pop()
+        const path = prevRegionObject.id
         regionObject.id = path
+        regionObject.name = prevRegionObject.name
         regionObject.region = null
-        moveInHierarchy(regionObject, enableAnimation)
-        showData(regionObject)
+        moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
+        showTitle(regionObject)
     }) : $('#back').addClass('disabled')
 }
 
 const moveStack = []
-const animationsEnabled = true
-moveInHierarchy({ id: 'regions', name: 'Επικράτεια', region: null }, animationsEnabled)
-showData({ id: 'regions', name: 'Επικράτεια' })
+moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled,maxAllowdedLevel)
+showTitle({ id: 'regions', name: '' })
 
 
 
