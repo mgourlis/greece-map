@@ -141,31 +141,3 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 const moveStack = []
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled,maxAllowdedLevel)
 showTitle({ id: 'regions', name: '' })
-
-
-var regionsPromise = axios.get('regions.json')
-
-regionsPromise.then(resp => {
-    let data = resp.data
-    data.regions.forEach( r => {
-        console.log('id: ' + r.id + ',' + r.name+ ',')
-    })
-    data.regions.forEach( r => {
-        let pePromise = axios.get(r.id + '.json')
-        pePromise.then(pe => {
-            let peData = pe.data
-            peData.regions.forEach(peR => {
-                console.log('id: ' + peR.id + ',' + peR.name+ ',')
-            })
-            peData.regions.forEach(d => {
-                let dPromise = axios.get(d.id + '.json')
-                dPromise.then(dim => {
-                    let dimData = dim.data
-                    dimData.regions.forEach(dimR => {
-                        console.log('id: ' + dimR.id + ',' + dimR.name+ ',')
-                    })
-                })
-            })
-        })
-    })
-})
