@@ -5,6 +5,47 @@ const maxAllowdedLevel = 4
 const animationsEnabled = true
 /* -------------------------- */
 
+/* ---------------------------------- SHOW DATA START --------------------------------- */
+
+function filodimosDdataIdFilter(id, data) {
+    let level = id.split('-')[0]
+    if (level === '1') {
+        return data.filter(reg => reg.regionDataId === id && ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+    }
+    else if (level === '2') {
+        return data.filter(reg => reg.peDataId === id && ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+    }
+    else if (level === '3') {
+        return data.filter(reg => reg.muniDataId === id&& ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+    }
+    else {
+        return data.filter(reg => ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+    }
+}
+
+async function calcTotalPerId(id, dataFilterFunc) {
+    const resp = await axios.get('data.json')
+    const data = resp.data.data
+    const filteredData = dataFilterFunc(id, data)
+    const sumTotal = filteredData.reduce(function (acc, region) {
+        if (region.total) {
+            const num = region.total.replace(/,/g, '')
+            return acc + 1 * num
+        } else {
+            return acc
+        }
+    }, 0)
+    return sumTotal.toLocaleString('el',{style: 'currency', currency: 'EUR'})
+}
+
+
+
+const showData = async (regionObject) => {
+    $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
+    $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await calcTotalPerId(regionObject.id, filodimosDdataIdFilter))
+}
+
+/* ---------------------------------- SHOW DATA END ------------------------------------- */
 
 function generateColors(saturation, lightness, amount) {
     let rgbColors = []
@@ -77,23 +118,22 @@ const drawMap = async function (canvas, path, onclick) {
     }
 }
 
-const canvas = Raphael('map')
-const showTitle = (regionObject) => {
-    console.log(regionObject)
-    $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
-}
 
-function getRegionPrefix(id){
+
+
+function getRegionPrefix(id) {
     let level = id.split('-')[0]
-    if(level === '1')
+    if (level === '1')
         return 'Περιφέρεια'
-    else if( level === '2')
+    else if (level === '2')
         return 'Περιφερειακή Ενότητα'
-    else if( level === '3')
+    else if (level === '3')
         return 'Δήμος'
     else
         return 'Επικράτεια'
 }
+
+const canvas = Raphael('map')
 
 function animateTransition(region, timeoutMs) {
     var elCenterX = region.getBBox(true).x2 - (region.getBBox(true).width / 2)
@@ -122,7 +162,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
         moveStack.length < maxAllowdedLevel && (path = regionObject.id + '.json')
         drawMap(canvas, path, (regionObject) => {
             moveStack.length < maxAllowdedLevel && moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
-            showTitle(regionObject)
+            showData(regionObject)
         })
     }, timeoutMs)
     moveStack.push(regionObject)
@@ -134,10 +174,10 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
         regionObject.name = prevRegionObject.name
         regionObject.region = null
         moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
-        showTitle(regionObject)
+        showData(regionObject)
     }) : $('#back').addClass('disabled')
 }
 
 const moveStack = []
-moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled,maxAllowdedLevel)
-showTitle({ id: 'regions', name: '' })
+moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
+showData({ id: 'regions', name: '' })
