@@ -10,16 +10,16 @@ const animationsEnabled = true
 function filodimosDdataIdFilter(id, data) {
     let level = id.split('-')[0]
     if (level === '1') {
-        return data.filter(reg => reg.regionDataId === id && ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+        return data.filter(reg => reg.regionDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
     }
     else if (level === '2') {
-        return data.filter(reg => reg.peDataId === id && ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+        return data.filter(reg => reg.peDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
     }
     else if (level === '3') {
-        return data.filter(reg => reg.muniDataId === id&& ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+        return data.filter(reg => reg.muniDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
     }
     else {
-        return data.filter(reg => ( reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ' ))
+        return data.filter(reg => (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
     }
 }
 
@@ -35,7 +35,7 @@ async function calcTotalPerId(id, dataFilterFunc) {
             return acc
         }
     }, 0)
-    return sumTotal.toLocaleString('el',{style: 'currency', currency: 'EUR'})
+    return sumTotal.toLocaleString('el', { style: 'currency', currency: 'EUR' })
 }
 
 
@@ -181,3 +181,39 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 const moveStack = []
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
+
+
+var chart = new Chartist.Bar('#chart', {
+    labels: ['Bananas', 'Apples', 'Strawberries'],
+    series: [
+        [{
+            value: 3,
+            meta: {
+                imageUrl: 'http://icons.iconarchive.com/icons/iconicon/veggies/32/bananas-icon.png'
+            }
+        }, {
+            value: 8,
+            meta: {
+                imageUrl: 'http://icons.iconarchive.com/icons/fi3ur/fruitsalad/32/apple-icon.png'
+            }
+        }, {
+            value: 2,
+            meta: {
+                imageUrl: 'http://icons.iconarchive.com/icons/ergosign/free-spring/32/strawberry-icon.png'
+            }
+        }]
+    ]
+}).on('draw', function (context) {
+    if (context.type === 'bar') {
+        var meta = Chartist.deserialize(context.meta);
+        context.element.parent().append(
+            new Chartist.Svg('image', {
+                height: 32,
+                width: 32,
+                x: context.x1 - (32 / 2),
+                y: context.y2 - 32,
+                'xlink:href': meta.imageUrl
+            })
+        );
+    }
+});
