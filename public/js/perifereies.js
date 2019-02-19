@@ -67,7 +67,7 @@ function createGraph(imgUrls, labelValuePairs) {
     var chart = new Chartist.Bar('#chart', {
         labels: labelValuePairs.map(pair => pair.key),
         series: [
-            labelValuePairs.map(pair => { return { value: pair.value, meta: { imageUrl: '' } }})
+            labelValuePairs.map(pair => { return { value: pair.value, meta: { imageUrl: imgUrls.find(val => { return pair.key === val.value }) } }})
         ]
     }).on('draw', function (context) {
         if (context.type === 'bar') {
@@ -94,7 +94,7 @@ const showData = async (regionObject) => {
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
     getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData)
-    createGraph(respSettings.data.groupBy.imgUrls, getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
+    createGraph(respSettings.data.groupBy.imgUrls, await getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
 }
 
 /* ---------------------------------- SHOW DATA END ------------------------------------- */
