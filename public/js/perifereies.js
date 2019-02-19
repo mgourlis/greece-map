@@ -7,42 +7,94 @@ const animationsEnabled = true
 
 /* ---------------------------------- SHOW DATA START --------------------------------- */
 
-function filodimosDdataIdFilter(id, data) {
-    let level = id.split('-')[0]
+function getFilterPerIdAndWhereClause(id, whereClause, data) {
+    let level = id.split('-')[0], filteredData = data, l = whereClause.length, i
     if (level === '1') {
-        return data.filter(reg => reg.regionDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
+        filteredData = data.filter(reg => reg.regionDataId === id)
     }
     else if (level === '2') {
-        return data.filter(reg => reg.peDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
+        filteredData = data.filter(reg => reg.peDataId === id)
     }
     else if (level === '3') {
-        return data.filter(reg => reg.muniDataId === id && (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
+        filteredData = data.filter(reg => reg.muniDataId === id)
     }
-    else {
-        return data.filter(reg => (reg.program === 'Φιλόδημος Ι' || reg.program === 'Φιλόδημος ΙΙ'))
+    for (i = 0; i < l; i++) {
+        filteredData = filteredData.filter(reg => whereClause[i].value.some(val => { return reg[whereClause[i].key] === val }))
     }
+    return filteredData
 }
 
-async function calcTotalPerId(id, dataFilterFunc) {
-    const resp = await axios.get('data.json')
-    const data = resp.data.data
-    const filteredData = dataFilterFunc(id, data)
-    const sumTotal = filteredData.reduce(function (acc, region) {
-        if (region.total) {
-            const num = region.total.replace(/,/g, '')
-            return acc + 1 * num
-        } else {
+function getUniqueValuesOfKey(key, data) {
+    let flags = [], uniqueKeyValues = [], l = data.length, i
+    for (i = 0; i < l; i++) {
+        if (flags[data[i][key]]) continue
+        flags[data[i][key]] = true
+        uniqueKeyValues.push(data[i][key])
+    }
+    return uniqueKeyValues
+}
+
+function getSumsOfKeyGroupByKey(sumKey, groupByKey, data) {
+    const keyValues = getUniqueValuesOfKey(groupByKey, data)
+    let i, l = keyValues.length, sumObjArray = []
+    for (i = 0; i < l; i++) {
+        let sum = data.reduce((acc, region) => {
+            if (region[sumKey] && region[groupByKey]) {
+                if (region[groupByKey] === keyValues[i]) {
+                    const num = region[sumKey].replace(/,/g, '')
+                    return acc + 1 * num
+                }
+            }
             return acc
+        }, 0)
+        sumObjArray.push({ key: keyValues[i], value: sum })
+    }
+    return sumObjArray
+}
+
+async function getSumOfKey(sumKey, data) {
+    const sumTotal = data.reduce((acc, region) => {
+        if (region[sumKey]) {
+            const num = region[sumKey].replace(/,/g, '')
+            return acc + 1 * num
         }
+        return acc
     }, 0)
     return sumTotal.toLocaleString('el', { style: 'currency', currency: 'EUR' })
+}
+
+function createGraph(imgUrls, labelValuePairs) {
+    var chart = new Chartist.Bar('#chart', {
+        labels: labelValuePairs.map(pair => pair.key),
+        series: [
+            labelValuePairs.map(pair => { return { value: pair.value, meta: { imageUrl: '' } }})
+        ]
+    }).on('draw', function (context) {
+        if (context.type === 'bar') {
+            var meta = Chartist.deserialize(context.meta)
+            context.element.parent().append(
+                new Chartist.Svg('image', {
+                    height: 32,
+                    width: 32,
+                    x: context.x1 - (32 / 2),
+                    y: context.y2 - 32,
+                    'xlink:href': meta.imageUrl
+                })
+            )
+        }
+    })
 }
 
 
 
 const showData = async (regionObject) => {
+    const respSettings = await axios.get('settings.json')
+    const respData = await axios.get('data.json')
+    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data)
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
-    $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await calcTotalPerId(regionObject.id, filodimosDdataIdFilter))
+    $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
+    getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData)
+    createGraph(respSettings.data.groupBy.imgUrls, getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
 }
 
 /* ---------------------------------- SHOW DATA END ------------------------------------- */
@@ -182,7 +234,7 @@ const moveStack = []
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
 
-
+/*
 var chart = new Chartist.Bar('#chart', {
     labels: ['Bananas', 'Apples', 'Strawberries'],
     series: [
@@ -205,7 +257,7 @@ var chart = new Chartist.Bar('#chart', {
     ]
 }).on('draw', function (context) {
     if (context.type === 'bar') {
-        var meta = Chartist.deserialize(context.meta);
+        var meta = Chartist.deserialize(context.meta)
         context.element.parent().append(
             new Chartist.Svg('image', {
                 height: 32,
@@ -214,6 +266,7 @@ var chart = new Chartist.Bar('#chart', {
                 y: context.y2 - 32,
                 'xlink:href': meta.imageUrl
             })
-        );
+        )
     }
-});
+})
+*/
