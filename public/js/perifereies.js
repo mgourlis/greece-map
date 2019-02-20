@@ -253,7 +253,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 }
 
 const moveStack = []
-const settingsPromise = await axios.get('settings.json')
-const dataPromise = await axios.get('data.json')
+const settingsPromise = axios.get('settings.json')
+const dataPromise = axios.get('data.json')
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
