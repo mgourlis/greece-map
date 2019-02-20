@@ -110,8 +110,8 @@ const toRelativeAmount = function (a) {
 }
 
 const showData = async (regionObject) => {
-    const respSettings = await axios.get('settings.json')
-    const respData = await axios.get('data.json')
+    const respSettings = settingsPromise
+    const respData = dataPromise
     const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data)
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
@@ -253,42 +253,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 }
 
 const moveStack = []
+const settingsPromise = await axios.get('settings.json')
+const dataPromise = await axios.get('data.json')
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
-
-/*
-var chart = new Chartist.Bar('#chart', {
-    labels: ['Bananas', 'Apples', 'Strawberries'],
-    series: [
-        [{
-            value: 3,
-            meta: {
-                imageUrl: 'http://icons.iconarchive.com/icons/iconicon/veggies/32/bananas-icon.png'
-            }
-        }, {
-            value: 8,
-            meta: {
-                imageUrl: 'http://icons.iconarchive.com/icons/fi3ur/fruitsalad/32/apple-icon.png'
-            }
-        }, {
-            value: 2,
-            meta: {
-                imageUrl: 'http://icons.iconarchive.com/icons/ergosign/free-spring/32/strawberry-icon.png'
-            }
-        }]
-    ]
-}).on('draw', function (context) {
-    if (context.type === 'bar') {
-        var meta = Chartist.deserialize(context.meta)
-        context.element.parent().append(
-            new Chartist.Svg('image', {
-                height: 32,
-                width: 32,
-                x: context.x1 - (32 / 2),
-                y: context.y2 - 32,
-                'xlink:href': meta.imageUrl
-            })
-        )
-    }
-})
-*/
