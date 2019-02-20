@@ -1,4 +1,4 @@
-/*global  $ axios Raphael*/
+/*global  $ axios Raphael Chartist*/
 
 /* ---------SETTINGS--------- */
 const maxAllowdedLevel = 4
@@ -67,7 +67,15 @@ function createGraph(imgUrls, labelValuePairs) {
     var chart = new Chartist.Bar('#chart', {
         labels: labelValuePairs.map(pair => pair.key),
         series: [
-            labelValuePairs.map(pair => { return { value: pair.value, meta: { imageUrl: imgUrls.find(val => { return pair.key === val.value }) } }})
+            labelValuePairs.map(pair => {
+                const urlObject = imgUrls.find(val => pair.key === val.value)
+                return {
+                    value: pair.value,
+                    meta: {
+                        imageUrl: urlObject && urlObject.url ? urlObject.url : ''  
+                    }
+                }
+            })
         ]
     }).on('draw', function (context) {
         if (context.type === 'bar') {
