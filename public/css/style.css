@@ -14,3 +14,9 @@ svg.ct-chart-bar, svg.ct-chart-line{
   transform: translate(-50%) rotate(-45deg);
   white-space:nowrap;
 }
+
+.ct-series-a .ct-bar {
+    /* Colour of your bars */
+    stroke:  #be1e2d;
+    stroke-width: 30;
+  }
