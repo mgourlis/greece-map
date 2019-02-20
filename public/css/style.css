@@ -1,10 +1,42 @@
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+
+
+.map-chart {
+  position: relative;
+  padding-top: 1rem;
+}
+/*
+.masthead {
+  min-height: 30rem;
+  position: relative;
+  display: table;
+  width: 100%;
+  height: auto;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  background: -webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.1)),to(rgba(255,255,255,.1))),url(../img/bg-masthead.jpg);
+  background: linear-gradient(90deg,rgba(255,255,255,.1) 0,rgba(255,255,255,.1) 100%),url(../img/bg-masthead.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.d-flex {
+  display: -ms-flexbox!important;
+  display: flex!important;
+}*/
+
 .map {
     max-width: 800px;
     max-height: 600px;
 }
 
 svg.ct-chart-bar, svg.ct-chart-line{
-	overflow: visible;
+  overflow: visible;
+  padding-top: 20px;
 }
 .ct-label.ct-label.ct-horizontal.ct-end {
   position: relative;
@@ -18,5 +50,10 @@ svg.ct-chart-bar, svg.ct-chart-line{
 .ct-series-a .ct-bar {
     /* Colour of your bars */
     stroke:  #be1e2d;
-    stroke-width: 30;
+    stroke-width: 32;
   }
+
+.ct-label {
+  padding-top: 18px;
+  padding-right: 18px;
+}

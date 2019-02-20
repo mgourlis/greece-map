@@ -77,6 +77,8 @@ function createGraph(imgUrls, labelValuePairs) {
                 }
             })
         ]
+    }, {
+        fullWidth: true,
     }).on('draw', function (context) {
         if (context.type === 'bar') {
             var meta = Chartist.deserialize(context.meta)
@@ -84,13 +86,13 @@ function createGraph(imgUrls, labelValuePairs) {
                 new Chartist.Svg('image', {
                     height: 32,
                     width: 32,
-                    x: context.x1 - (32 / 2),
-                    y: context.y2 - 32,
+                    x: context.x1 - (32 / 2) + 1,
+                    y: context.y1,
                     'xlink:href': meta.imageUrl
                 })
             )
             context.group.elem('text', {
-                x: context.x1 - 22,
+                x: context.x1 - 20,
                 y: context.y2 - 5
             }, 'ct-label').text(toRelativeAmount(context.series[context.index].value))
         }
@@ -98,12 +100,13 @@ function createGraph(imgUrls, labelValuePairs) {
 }
 
 const toRelativeAmount = function (a) {
-    let postfix = 'εκ.', d = 1000000
-    if(a/d < 1){ 
-        postfix = 'χιλ.'
+    let postfix = 'εκ', d = 1000000, minmax = 2
+    if (a / d < 1) {
+        postfix = 'χιλ'
         d = 1000
+        minmax = 0
     }
-    return (a/d).toLocaleString('el-gr', {maximumFractionDigits: 2}) + postfix 
+    return (a / d).toLocaleString('el-gr', { minimumFractionDigits: minmax, maximumFractionDigits: minmax }) + postfix
 }
 
 const showData = async (regionObject) => {
