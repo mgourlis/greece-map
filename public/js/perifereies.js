@@ -72,7 +72,7 @@ function createGraph(imgUrls, labelValuePairs) {
                 return {
                     value: pair.value,
                     meta: {
-                        imageUrl: urlObject && urlObject.url ? urlObject.url : ''  
+                        imageUrl: urlObject && urlObject.url ? urlObject.url : ''
                     }
                 }
             })
@@ -89,11 +89,22 @@ function createGraph(imgUrls, labelValuePairs) {
                     'xlink:href': meta.imageUrl
                 })
             )
+            context.group.elem('text', {
+                x: context.x1 - 22,
+                y: context.y2 - 5
+            }, 'ct-label').text(toRelativeAmount(context.series[context.index].value))
         }
     })
 }
 
-
+const toRelativeAmount = function (a) {
+    let postfix = 'εκ.', d = 1000000
+    if(a/d < 1){ 
+        postfix = 'χιλ.'
+        d = 1000
+    }
+    return (a/d).toLocaleString('el-gr', {maximumFractionDigits: 2}) + postfix 
+}
 
 const showData = async (regionObject) => {
     const respSettings = await axios.get('settings.json')
