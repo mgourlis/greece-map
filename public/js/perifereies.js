@@ -3,7 +3,18 @@
 /* ---------SETTINGS--------- */
 const maxAllowdedLevel = 4
 const animationsEnabled = true
+const compareDataKey = 'category'
 /* -------------------------- */
+
+
+function compare(a, b) {
+    if (a[compareDataKey] < b[compareDataKey])
+        return -1
+    if (a[compareDataKey] > b[compareDataKey])
+        return 1
+    return 0
+}
+
 
 /* ---------------------------------- SHOW DATA START --------------------------------- */
 
@@ -78,29 +89,51 @@ function createGraph(imgUrls, labelValuePairs) {
             })
         ]
     }, {
-        fullWidth: true,
+        seriesBarDistance: 10,
+        reverseData: true,
+        horizontalBars: true
     }).on('draw', function (context) {
         if (context.type === 'bar') {
+            context.element.attr({
+                x1: context.x1 + 0.001
+            })
             var meta = Chartist.deserialize(context.meta)
             context.element.parent().append(
                 new Chartist.Svg('image', {
                     height: 32,
                     width: 32,
-                    x: context.x1 - (32 / 2) + 1,
-                    y: context.y1,
+                    x: context.x1 - 32,
+                    y: context.y1 - (32 / 2),
                     'xlink:href': meta.imageUrl
                 })
             )
             context.group.elem('text', {
-                x: context.x1 - 20,
-                y: context.y2 - 5
-            }, 'ct-label').text(toRelativeAmount(context.series[context.index].value))
+                x: context.x2 + 5,
+                y: context.y1 + 5
+            }, 'ct-label').text(toRelativeAmount(context.series[context.series.length - 1 - context.index].value))
         }
+    })
+    chart.on('created', function (context) {
+        var defs = context.svg.elem('defs')
+        defs.elem('linearGradient', {
+            id: 'gradient',
+            x1: 0,
+            y1: 1,
+            x2: 0,
+            y2: 0
+        }).elem('stop', {
+            offset: 0,
+            'stop-color': '#f5af19'
+        }).parent().elem('stop', {
+            offset: 1,
+            'stop-color': '#f12711'
+        })
     })
 }
 
 const toRelativeAmount = function (a) {
-    let postfix = 'εκ', d = 1000000, minmax = 2
+    var postfix = 'εκ', d = 1000000, minmax = 2
+    console.log(a)
     if (a / d < 1) {
         postfix = 'χιλ'
         d = 1000
@@ -110,12 +143,11 @@ const toRelativeAmount = function (a) {
 }
 
 const showData = async (regionObject) => {
-    const respSettings = settingsPromise
-    const respData = dataPromise
-    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data)
+    const respSettings = await settingsPromise
+    const respData = await dataPromise
+    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compare)
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
-    getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData)
     createGraph(respSettings.data.groupBy.imgUrls, await getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
 }
 
