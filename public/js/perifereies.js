@@ -113,27 +113,10 @@ function createGraph(imgUrls, labelValuePairs) {
             }, 'ct-label').text(toRelativeAmount(context.series[context.series.length - 1 - context.index].value))
         }
     })
-    chart.on('created', function (context) {
-        var defs = context.svg.elem('defs')
-        defs.elem('linearGradient', {
-            id: 'gradient',
-            x1: 0,
-            y1: 1,
-            x2: 0,
-            y2: 0
-        }).elem('stop', {
-            offset: 0,
-            'stop-color': '#f5af19'
-        }).parent().elem('stop', {
-            offset: 1,
-            'stop-color': '#f12711'
-        })
-    })
 }
 
 const toRelativeAmount = function (a) {
     var postfix = 'εκ', d = 1000000, minmax = 2
-    console.log(a)
     if (a / d < 1) {
         postfix = 'χιλ'
         d = 1000

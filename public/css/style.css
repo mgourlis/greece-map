@@ -58,7 +58,7 @@ text.ct-label {
 .filodimos-banner{
   height: 100px;
   display: flex;
-  justify-content: space-between; /* Can be changed in the live sample */
+  justify-content: center; /* Can be changed in the live sample */
   background: url('/img/city-banner-long.png');
 }
 
@@ -68,8 +68,16 @@ text.ct-label {
 }
 
 .filodimos-bg{
-  background: -webkit-linear-gradient(to right, #f12711, #f5af19); 
-  background: linear-gradient(to right, #f12711, #f5af19);
+  background-color: #c04023;
+  background-image: -webkit-linear-gradient( #c04023, #f5af19); 
+  background-image: linear-gradient( #c04023, #f5af19);
+}
+
+.filodimos-container-bg{
+  position: relative;
+  padding-top: 20px;
+  background-color: #c04023;
+  background-image: url('/img/container-bg.png');
 }
 
 .footer {
@@ -79,9 +87,9 @@ text.ct-label {
   color:#fff;
   padding-top:20px;
   width: 100%;
-  background: #00003E;
-  background: -webkit-linear-gradient(to right, #f12711, #f5af19); 
-  background: linear-gradient(to right, #f12711, #f5af19);
+  background: #c04023;
+  background: -webkit-linear-gradient(to top, #c04023, #f5af19); 
+  background: linear-gradient(to top, #c04023, #f5af19);
   text-align: center;
 }
 
@@ -148,5 +156,9 @@ text.ct-label {
   text-align: right;
   font-size: 0.5rem;
   color: #959595;
+}
+
+.credits a{
+  color: #A0A0A0 !important;
 }
 
