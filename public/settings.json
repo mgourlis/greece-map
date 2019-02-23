@@ -14,35 +14,35 @@
         "imgUrls": [
             {
                 "value": "ΑΠΟΧΕΤΕΥΣΗ",
-                "url": ""
+                "url": "/img/graph-icons/apoxeuteusi.png"
             },
             {
                 "value": "ΥΔΡΕΥΣΗ",
-                "url": ""
+                "url": "/img/graph-icons/ydreusi.png"
             },
             {
                 "value": "ΑΓΡΟΤΙΚΗ ΟΔΟΠΟΙΙΑ",
-                "url": ""
+                "url": "/img/graph-icons/agrotiki-odopoiia.png"
             },
             {
                 "value": "ΠΡΟΜΗΘΕΙΑ ΜΗΧΑΝΗΜΑΤΩΝ ΕΡΓΟΥ",
-                "url": ""
+                "url": "/img/graph-icons/mixanimata.png"
             },
             {
                 "value": "ΣΥΝΤΗΡΗΣΗ ΣΧΟΛΙΚΩΝ ΚΤΙΡΙΩΝ ΚΑΙ ΑΥΛΕΙΩΝ ΧΩΡΩΝ",
-                "url": ""
+                "url": "/img/graph-icons/sxolika-ktiria.png"
             },
             {
                 "value": "ΑΝΑΒΑΘΜΙΣΗ ΠΑΙΔΙΚΩΝ ΧΑΡΩΝ",
-                "url": ""
+                "url": "/img/graph-icons/paidikes-xares.png"
             },
             {
                 "value": "ΧΑΔΑ",
-                "url": ""
+                "url": "/img/graph-icons/xada.png"
             },
             {
                 "value": "ΔΗΜΟΤΙΚΑ ΚΤΗΡΙΑ",
-                "url": ""
+                "url": "/img/graph-icons/dimotika-ktiria.png"
             }
         ]
     }

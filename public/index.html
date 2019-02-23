@@ -9,7 +9,11 @@
     <script src="fontawesome-free/js/all.min.js"></script>
     <link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/res-table.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
 </head>
@@ -35,13 +39,13 @@
                     <div class="collapse navbar-collapse justify-content-center" id="filodimos-navbar1">
                         <ul class="navbar-nav">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Αρχική <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/">Αρχική <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Το Πρόγραμμα</a>
+                                <a class="nav-link" href="/programma.html">Το Πρόγραμμα</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Δεδομένα</a>
+                                <a class="nav-link" href="/dedomena.html">Δεδομένα</a>
                             </li>
                         </ul>
                     </div>
@@ -56,13 +60,13 @@
                 <div class="collapse navbar-collapse filodimos-center-banner" id="filodimos-navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link text-white" href="#">Αρχική <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="/">Αρχική <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Το Πρόγραμμα</a>
+                            <a class="nav-link" href="/programma.html">Το Πρόγραμμα</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Δεδομένα</a>
+                            <a class="nav-link" href="/dedomena.html">Δεδομένα</a>
                         </li>
                     </ul>
                 </div>
@@ -76,7 +80,7 @@
             <p></p>
             <div id="usage-box" class="alert alert-info alert-dismissible">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p><b>Επιλέξτε</b> κάποια <b>περιοχή</b> πάνω στο χάρτη για να δείτε τις χρηματοδοτήσεις του
+                <p><b>Επιλέξτε</b> μια <b>περιοχή</b> πάνω στο χάρτη για να δείτε τις χρηματοδοτήσεις του
                     προγράμματος
                     <b>Φιλόδημος Ι και ΙΙ</b></p>
             </div>
@@ -95,9 +99,27 @@
                             <div id="chart" class="ct-golden-section"></div>
                         </div>
                     </div>
+                    <hr>
+                </div>
+                <div style="margin-top: 50px" class="row">
+                    <a style="margin:auto" id="tableData" href="javascript:;" class="btn btn-filodimos">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i></i> Αναλυτικά
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="limiter">
+                        <div class="container-table100">
+                            <div class="wrap-table100">
+                                <div class="table" id="dataTable">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!--BODY END-->
     <!--FOOTER-->
@@ -113,7 +135,8 @@
             </p>
             <p class="credits">
                 Κατασκευή <a href="http://mgourlis.gr">Μύρων Γουρλής</a> & Αλέξης Παναγιωτόπουλος<br />
-                <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by starline - www.freepik.com</a>
+                <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by starline -
+                    www.freepik.com</a>
             </p>
 
         </div>
@@ -124,6 +147,8 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/perifereies.js"></script>
+    <script src="vendor/bootstrap/js/popper.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
     <script>
         $(document).ready(function () {
             setTimeout(() => {

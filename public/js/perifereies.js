@@ -3,16 +3,19 @@
 /* ---------SETTINGS--------- */
 const maxAllowdedLevel = 4
 const animationsEnabled = true
-const compareDataKey = 'category'
+const compareByKeyGraph = 'category'
+const compareByKeyDataTable = 'municipalityName'
 /* -------------------------- */
 
 
-function compare(a, b) {
-    if (a[compareDataKey] < b[compareDataKey])
-        return -1
-    if (a[compareDataKey] > b[compareDataKey])
-        return 1
-    return 0
+function compareByKey(key, desc = false) {
+    return function (a, b) {
+        if (a[key] < b[key])
+            return desc?1:-1
+        if (a[key] > b[key])
+            return desc?-1:1
+        return 0
+    }
 }
 
 
@@ -89,30 +92,34 @@ function createGraph(imgUrls, labelValuePairs) {
             })
         ]
     }, {
-        seriesBarDistance: 10,
-        reverseData: true,
-        horizontalBars: true
-    }).on('draw', function (context) {
-        if (context.type === 'bar') {
-            context.element.attr({
-                x1: context.x1 + 0.001
-            })
-            var meta = Chartist.deserialize(context.meta)
-            context.element.parent().append(
-                new Chartist.Svg('image', {
-                    height: 32,
-                    width: 32,
-                    x: context.x1 - 32,
-                    y: context.y1 - (32 / 2),
-                    'xlink:href': meta.imageUrl
+            seriesBarDistance: 10,
+            horizontalBars: true,
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return toRelativeAmount(value)
+                }
+            }
+        }).on('draw', function (context) {
+            if (context.type === 'bar') {
+                context.element.attr({
+                    x1: context.x1 + 0.001
                 })
-            )
-            context.group.elem('text', {
-                x: context.x2 + 5,
-                y: context.y1 + 5
-            }, 'ct-label').text(toRelativeAmount(context.series[context.series.length - 1 - context.index].value))
-        }
-    })
+                var meta = Chartist.deserialize(context.meta)
+                context.element.parent().append(
+                    new Chartist.Svg('image', {
+                        height: 32,
+                        width: 32,
+                        x: context.x1 - 32,
+                        y: context.y1 - (32 / 2),
+                        'xlink:href': meta.imageUrl
+                    })
+                )
+                context.group.elem('text', {
+                    x: context.x2 + 5,
+                    y: context.y1 + 5
+                }, 'ct-label').text(toRelativeAmount(context.series[context.series.length - 1 - context.index].value))
+            }
+        })
 }
 
 const toRelativeAmount = function (a) {
@@ -121,6 +128,9 @@ const toRelativeAmount = function (a) {
         postfix = 'χιλ'
         d = 1000
         minmax = 0
+    } else {
+        if (a % d === 0)
+            minmax = 0
     }
     return (a / d).toLocaleString('el-gr', { minimumFractionDigits: minmax, maximumFractionDigits: minmax }) + postfix
 }
@@ -128,7 +138,7 @@ const toRelativeAmount = function (a) {
 const showData = async (regionObject) => {
     const respSettings = await settingsPromise
     const respData = await dataPromise
-    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compare)
+    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compareByKey(compareByKeyGraph,true))
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
     createGraph(respSettings.data.groupBy.imgUrls, await getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
@@ -264,6 +274,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
         regionObject.region = null
         moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
         showData(regionObject)
+        $('#dataTable').empty()
     }) : $('#back').addClass('disabled')
 }
 
@@ -272,3 +283,28 @@ const settingsPromise = axios.get('settings.json')
 const dataPromise = axios.get('data.json')
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
+
+$('#tableData').on("click", async function () {
+    $('#dataTable').empty()
+    const respSettings = await settingsPromise
+    const respData = await dataPromise
+    const regionObject = moveStack[moveStack.length - 1]
+    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compareByKey(compareByKeyDataTable))
+    let header = '<div class="row header"><div class="cell">Πρόγραμμα</div>' +
+        '<div class="cell">Έτος</div><div class="cell">Κατηγορία</div>' +
+        '<div class="cell">Δήμος</div><div class="cell">Φιλόδημος</div>' +
+        '<div class="cell"> Ίδιοι Πόροι</div><div class="cell">Σύνολο</div></div> '
+    $('#dataTable').append(header)
+    filteredData.forEach((elem) => {
+        let elemToAppend = '<div class="row"><div class="cell" data-title="Πρόγραμμα">' + elem.program +
+            '</div><div class="cell" data-title="Έτος">' + elem.year +
+            '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
+            '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
+            '</div><div class="cell" data-title="Φιλόδημος">' + (1 * elem.pdeYpes).toLocaleString('el', { style: 'currency', currency: 'EUR' }) +
+            '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (1 * elem.ownResources).toLocaleString('el', { style: 'currency', currency: 'EUR' }) +
+            '</div><div class="cell" data-title="Σύνολο"><b>' + (1 * elem.total).toLocaleString('el', { style: 'currency', currency: 'EUR' }) + '</b></div></div>'
+        $('#dataTable').append(elemToAppend)
+    })
+});
+
+
