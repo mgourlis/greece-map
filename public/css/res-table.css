@@ -51,6 +51,11 @@
   background: #F39C12;
 }
 
+.table .row.tableFooter {
+  color: #ffffff;
+  background: #F39C12;
+}
+
 @media screen and (max-width: 992px) {
   .table .row {
     display: block;
@@ -61,7 +66,16 @@
     height: 0px;
   }
 
+  .table .row.tableFooter {
+    padding: 0;
+    height: 0px;
+  }
+
   .table .row.header .cell {
+    display: none;
+  }
+
+  .table .row.tableFooter .cell {
     display: none;
   }
 
@@ -105,6 +119,16 @@
   line-height: 1.2;
   font-weight: unset !important;
 
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+.table .row.tableFooter .cell {
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset !important;
+  width: 100%;
   padding-top: 19px;
   padding-bottom: 19px;
 }

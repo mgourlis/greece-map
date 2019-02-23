@@ -11,9 +11,9 @@ const compareByKeyDataTable = 'municipalityName'
 function compareByKey(key, desc = false) {
     return function (a, b) {
         if (a[key] < b[key])
-            return desc?1:-1
+            return desc ? 1 : -1
         if (a[key] > b[key])
-            return desc?-1:1
+            return desc ? -1 : 1
         return 0
     }
 }
@@ -21,7 +21,7 @@ function compareByKey(key, desc = false) {
 
 /* ---------------------------------- SHOW DATA START --------------------------------- */
 
-function getFilterPerIdAndWhereClause(id, whereClause, data) {
+function getFilterPerIdAndWhereClause(id, whereClause, data, start = 0, maxElem, sortKey) {
     let level = id.split('-')[0], filteredData = data, l = whereClause.length, i
     if (level === '1') {
         filteredData = data.filter(reg => reg.regionDataId === id)
@@ -34,6 +34,12 @@ function getFilterPerIdAndWhereClause(id, whereClause, data) {
     }
     for (i = 0; i < l; i++) {
         filteredData = filteredData.filter(reg => whereClause[i].value.some(val => { return reg[whereClause[i].key] === val }))
+    }
+    if (sortKey) {
+        filteredData = filteredData.sort(compareByKey(sortKey))
+    }
+    if (maxElem) {
+        filteredData = filteredData.slice(start, start + maxElem)
     }
     return filteredData
 }
@@ -117,7 +123,7 @@ function createGraph(imgUrls, labelValuePairs) {
                 context.group.elem('text', {
                     x: context.x2 + 5,
                     y: context.y1 + 5
-                }, 'ct-label').text(toRelativeAmount(context.series[context.series.length - 1 - context.index].value))
+                }, 'ct-label').text(toRelativeAmount(context.series[context.index].value))
             }
         })
 }
@@ -138,7 +144,7 @@ const toRelativeAmount = function (a) {
 const showData = async (regionObject) => {
     const respSettings = await settingsPromise
     const respData = await dataPromise
-    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compareByKey(compareByKeyGraph,true))
+    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compareByKey(compareByKeyGraph, true))
     $('#region-title').html(getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     $('#region-total').html('Σύνολο Χρηματοδοτήσεων: ' + await getSumOfKey(respSettings.data.sumKey, filteredData))
     createGraph(respSettings.data.groupBy.imgUrls, await getSumsOfKeyGroupByKey(respSettings.data.sumKey, respSettings.data.groupBy.key, filteredData))
@@ -251,6 +257,10 @@ function animateTransition(region, timeoutMs) {
 }
 
 function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
+    $('#dataTable').empty()
+    $('#lazyLoadData').hide('fast')
+    lazyLoadCounter = 0
+    $('#lazyLoadData').removeClass("disabled")
     var timeoutMs = 0
     if (regionObject.region !== null && enableAnimation) {
         timeoutMs = 1500
@@ -274,7 +284,6 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
         regionObject.region = null
         moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
         showData(regionObject)
-        $('#dataTable').empty()
     }) : $('#back').addClass('disabled')
 }
 
@@ -284,27 +293,68 @@ const dataPromise = axios.get('data.json')
 moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, maxAllowdedLevel)
 showData({ id: 'regions', name: '' })
 
+
+var lazyLoadCounter = 0
+var lazyLoadingMaxCount = 0
+
 $('#tableData').on("click", async function () {
     $('#dataTable').empty()
+    lazyLoadCounter = 0
+    $('#lazyLoadData').removeClass("disabled")
+    $('#dataLoading').show('fast', async () => {
+        const respSettings = await settingsPromise
+        const respData = await dataPromise
+        const regionObject = moveStack[moveStack.length - 1]
+        lazyLoadingMaxCount = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).length
+        const filteredData = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data, lazyLoadCounter, 10, compareByKeyDataTable)
+        lazyLoadCounter = lazyLoadCounter + 10
+        if(lazyLoadCounter > lazyLoadingMaxCount){
+            $('#lazyLoadData').addClass("disabled")
+        }
+        let header = '<div class="row header"><div class="cell">Πρόγραμμα</div>' +
+            '<div class="cell">Έτος</div><div class="cell">Κατηγορία</div>' +
+            '<div class="cell">Δήμος</div><div class="cell">Φιλόδημος</div>' +
+            '<div class="cell"> Ίδιοι Πόροι</div><div class="cell">Σύνολο</div></div> '
+        $('#dataTable').append(header)
+        filteredData.forEach((elem) => {
+            const zero = 0
+            let elemToAppend = '<div class="row"><div class="cell" data-title="Πρόγραμμα">' + elem.program +
+                '</div><div class="cell" data-title="Έτος">' + elem.year +
+                '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
+                '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
+                '</div><div class="cell" data-title="Φιλόδημος">' + (elem.pdeYpes ? (1 * elem.pdeYpes.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Σύνολο"><b>' + (elem.total ? (1 * elem.total.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) + '</b></div></div>'
+            $('#dataTable').append(elemToAppend)
+        })
+    })
+    $('#lazyLoadData').show('fast')
+    $('#dataLoading').hide('fast')
+});
+
+$('#lazyLoadData').on("click", async function () {
     const respSettings = await settingsPromise
     const respData = await dataPromise
     const regionObject = moveStack[moveStack.length - 1]
-    const filteredData = getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).sort(compareByKey(compareByKeyDataTable))
-    let header = '<div class="row header"><div class="cell">Πρόγραμμα</div>' +
-        '<div class="cell">Έτος</div><div class="cell">Κατηγορία</div>' +
-        '<div class="cell">Δήμος</div><div class="cell">Φιλόδημος</div>' +
-        '<div class="cell"> Ίδιοι Πόροι</div><div class="cell">Σύνολο</div></div> '
-    $('#dataTable').append(header)
-    filteredData.forEach((elem) => {
-        let elemToAppend = '<div class="row"><div class="cell" data-title="Πρόγραμμα">' + elem.program +
-            '</div><div class="cell" data-title="Έτος">' + elem.year +
-            '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
-            '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
-            '</div><div class="cell" data-title="Φιλόδημος">' + (1 * elem.pdeYpes).toLocaleString('el', { style: 'currency', currency: 'EUR' }) +
-            '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (1 * elem.ownResources).toLocaleString('el', { style: 'currency', currency: 'EUR' }) +
-            '</div><div class="cell" data-title="Σύνολο"><b>' + (1 * elem.total).toLocaleString('el', { style: 'currency', currency: 'EUR' }) + '</b></div></div>'
-        $('#dataTable').append(elemToAppend)
+    $('#dataLazyLoading').show('fast', async () => {
+        const filteredData = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data, lazyLoadCounter, 10, compareByKeyDataTable)
+        lazyLoadCounter = lazyLoadCounter + 10
+        if(lazyLoadCounter > lazyLoadingMaxCount){
+            $('#lazyLoadData').addClass("disabled")
+        }
+        filteredData.forEach((elem) => {
+            const zero = 0
+            let elemToAppend = '<div class="row"><div class="cell" data-title="Πρόγραμμα">' + elem.program +
+                '</div><div class="cell" data-title="Έτος">' + elem.year +
+                '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
+                '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
+                '</div><div class="cell" data-title="Φιλόδημος">' + (elem.pdeYpes ? (1 * elem.pdeYpes.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Σύνολο"><b>' + (elem.total ? (1 * elem.total.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) + '</b></div></div>'
+            $('#dataTable').append(elemToAppend)
+        })
     })
-});
+    $('#dataLazyLoading').hide('fast')
+})
 
 

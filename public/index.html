@@ -101,19 +101,34 @@
                     </div>
                     <hr>
                 </div>
-                <div style="margin-top: 50px" class="row">
-                    <a style="margin:auto" id="tableData" href="javascript:;" class="btn btn-filodimos">
-                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i></i> Αναλυτικά
-                    </a>
+                <div style="margin-top:  50px" class="row">
+                    <div style="margin:auto">
+                        <a id="tableData" href="javascript:;" class="btn btn-filodimos">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i></i> Αναλυτικά
+                        </a>
+                        <div id="dataLoading" style="display:none;" class="spinner-border text-warning" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="limiter">
                         <div class="container-table100">
                             <div class="wrap-table100">
                                 <div class="table" id="dataTable">
-                                    
+
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin:auto">
+                        <a  id="lazyLoadData" style="display:none" href="javascript:;" class="btn btn-filodimos">
+                            <i class="fas fa-arrow-down"></i></i></i> Περισσότερα αποτελέσματα
+                        </a>
+                        <div id="dataLazyLoading" style="display:none" class="spinner-border text-warning" role="status">
+                            <span class="sr-only"></span>
                         </div>
                     </div>
                 </div>
