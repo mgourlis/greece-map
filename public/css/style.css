@@ -93,16 +93,33 @@ text.ct-label {
 .filodimos-container-bg{
   position: relative;
   padding-top: 20px;
-  background-color: #c04023;
+  background-color: #ffffff;
   background-image: url('/img/container-bg.png');
+}
+
+.filodimos-container-shadow{
   -moz-box-shadow:    inset 0 0 10px 0 #000000;
   -webkit-box-shadow: inset 0 0 10px 0 #000000;
   box-shadow:         inset 0 0 10px 0 #000000;
 }
 
+.goToTop {
+  position: fixed;
+  top: 0;
+  height: 100px;
+  z-index: 99;
+  -moz-box-shadow: 0 0 10px 0 #000000;
+  -webkit-box-shadow: 0 0 10px 0 #000000;
+  box-shadow: 0 0 10px 0 #000000;
+}
+
+.goToTopBody {
+  padding-top: 100px;
+}
+
 .footer {
-  position: relative;
-  height: 150px;
+  position: fixed;
+  height: 100px;
   bottom: 0;
   color:#fff;
   padding-top:20px;
@@ -111,6 +128,10 @@ text.ct-label {
   background: -webkit-linear-gradient(to top, #c04023, #f5af19); 
   background: linear-gradient(to top, #c04023, #f5af19);
   text-align: center;
+  z-index:99;
+  -moz-box-shadow:  0 0 10px 0 #000000;
+  -webkit-box-shadow: 0 0 10px 0 #000000;
+  box-shadow: 0 0 10px 0 #000000;
 }
 
 .footer ul {
@@ -193,6 +214,23 @@ text.ct-label {
   text.ct-label {
     font-size: 65%;
     font-weight: bold;
+  }
+
+  .goToTop {
+    position: fixed;
+    top: 0;
+    height: 150px;
+    z-index: 99;
+  }
+
+  .credits{
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    text-align: right;
+    font-size: 0.2rem;
+    display: none;
+    color: #959595;
   }
 }
 

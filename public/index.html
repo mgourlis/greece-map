@@ -21,11 +21,12 @@
 
 <body>
     <!-- HEADER-->
-    <div class="filodimos-banner"></div>
-    <div class="container-full  filodimos-bg">
+    <div id="filodimos-banner" class="filodimos-banner"></div>
+    <div id="navbar" class="container-full  filodimos-bg">
         <div class="filodimos-center-banner">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <img style='height: 100px; width: 100%; object-fit: contain' src="/img/ypes-logo.png" />
+                <a href="http://www.ypes.gr" target="_blank">
+                    <img style='height: 100px; width: 100%; object-fit: contain' src="/img/ypes-logo.png" /></a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="filodimos-center-banner">
@@ -47,14 +48,15 @@
                                 <a class="nav-link text-white" href="/programma.html">Το Πρόγραμμα</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="/dedomena.html">Δεδομένα</a>
+                                <a class="nav-link text-white" href="/multimedia.html">Multimedia</a>
                             </li>
                         </ul>
                     </div>
                 </nav>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <img style='height: 100px; width: 100%; object-fit: contain' src="/img/filodimos-logo.png" />
+                    <a href="http://www.ypes.gr/el/Ministry/Actions/ProgrammaFilodimos/" target="_blank">
+                        <img style='height: 100px; width: 100%; object-fit: contain' src="/img/filodimos-logo.png" /></a>
             </div>
         </div>
         <div class="row">
@@ -68,7 +70,7 @@
                             <a class="nav-link text-white" href="/programma.html">Το Πρόγραμμα</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/dedomena.html">Δεδομένα</a>
+                            <a class="nav-link text-white" href="/multimedia.html">Multimedia</a>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +79,7 @@
     </div>
     <!--HEADER END-->
     <!--BODY-->
-    <div class="filodimos-container-bg">
+    <div id="content" class="filodimos-container-bg filodimos-container-shadow">
         <div class="container">
             <p></p>
             <div id="usage-box" class="alert alert-info alert-dismissible">
@@ -94,7 +96,9 @@
                 </div>
                 <div class="row">
                     <div id="map" class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
-                        <div id="mapLoading" style="top: 50%;right: 50%;position: absolute; height: 2rem; width: 2rem;display: none;" class="spinner-border text-primary" role="status">
+                        <div id="mapLoading"
+                            style="top: 50%;right: 50%;position: absolute; height: 2rem; width: 2rem;display: none;"
+                            class="spinner-border text-primary" role="status">
                             <span class="sr-only"> Επεξεργασία...</span>
                         </div>
                     </div>
@@ -150,9 +154,8 @@
             <p>Φιλόδημος - Υπουργείο Εσωτερικών</p>
             <p>
                 <ul class="social">
-                    <li> <a href="#"> <i class="fab fa-facebook-f"> </i> </a> </li>
-                    <li> <a href="#"> <i class="fab fa-twitter"> </i> </a> </li>
-                    <li> <a href="#"> <i class="fab fa-youtube"> </i> </a> </li>
+                    <li> <a href="https://www.facebook.com/ypesgr/" target="_blank"> <i class="fab fa-facebook-f"> </i> </a> </li>
+                    <li> <a href="https://twitter.com/ypesgr" target="_blank"> <i class="fab fa-twitter"> </i> </a> </li>
                 </ul>
             </p>
             <p class="credits">
@@ -176,9 +179,18 @@
     <script>
         $(document).ready(function () {
             setTimeout(() => {
-                $('#usage-box').remove();
-            }, 100000)
-        });
+                $('#usage-box').remove()
+            }, 40000)
+        })
+
+        $(window).bind('scroll', function () {
+            var navHeight = $('#filodimos-banner').height();
+            ($(window).scrollTop() > navHeight) ? $('#navbar').addClass('goToTop') : $('#navbar').removeClass('goToTop');
+            ($(window).scrollTop() > navHeight) ? $('#content').addClass('goToTopBody') : $('#content').removeClass('goToTopBody');
+        })
+    </script>
+    <script>
+
     </script>
 </body>
 

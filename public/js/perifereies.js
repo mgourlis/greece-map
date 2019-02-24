@@ -278,6 +278,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
                     resetLazyLoader()
                 }
                 showData(regionObject)
+                moveStack.length === maxAllowdedLevel && showTableData()
             })
             $('#mapLoading').hide('slow')
         }, timeoutMs)
@@ -302,6 +303,10 @@ moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, ma
 showData({ id: 'regions', name: '' })
 
 
+$('#tableData').on("click", showTableData)
+
+$('#lazyLoadData').on("click", getMoreTableData)
+
 var lazyLoadCounter = 0
 var lazyLoadingMaxCount = 0
 
@@ -313,7 +318,7 @@ function resetLazyLoader() {
     $('#lazyLoadData').removeClass("disabled")
 }
 
-$('#tableData').on("click", async function () {
+async function showTableData() {
     resetLazyLoader()
     $('#dataLoading').show('fast', async () => {
         const respSettings = await settingsPromise
@@ -344,9 +349,9 @@ $('#tableData').on("click", async function () {
     })
     $('#lazyLoadData').show('fast')
     $('#dataLoading').hide('fast')
-});
+}
 
-$('#lazyLoadData').on("click", async function () {
+async function getMoreTableData() {
     const respSettings = await settingsPromise
     const respData = await dataPromise
     const regionObject = moveStack[moveStack.length - 1]
@@ -369,4 +374,4 @@ $('#lazyLoadData').on("click", async function () {
         })
     })
     $('#dataLazyLoading').hide('fast')
-})
+}
