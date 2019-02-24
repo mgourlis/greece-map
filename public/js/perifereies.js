@@ -2,7 +2,6 @@
 
 /* ---------SETTINGS--------- */
 const maxAllowdedLevel = 4
-const animationsEnabled = true
 const compareByKeyGraph = 'category'
 const compareByKeyDataTable = 'municipalityName'
 /* -------------------------- */
@@ -17,6 +16,14 @@ function compareByKey(key, desc = false) {
         return 0
     }
 }
+
+/*Disable animations if Mobile or Tablet*/
+
+const mobileDetector = new MobileDetect(window.navigator.userAgent)
+var animationsEnabled = mobileDetector.mobile() ? false : true
+$(document).ready(function () {
+    alert(mobileDetector.mobile())
+})
 
 
 /* ---------------------------------- SHOW DATA START --------------------------------- */
@@ -98,6 +105,8 @@ function createGraph(imgUrls, labelValuePairs) {
             })
         ]
     }, {
+            fullWidth: true,
+            stretch: true,
             seriesBarDistance: 10,
             horizontalBars: true,
             axisX: {
@@ -223,9 +232,6 @@ const drawMap = async function (canvas, path, onclick) {
     }
 }
 
-
-
-
 function getRegionPrefix(id) {
     let level = id.split('-')[0]
     if (level === '1')
@@ -257,10 +263,7 @@ function animateTransition(region, timeoutMs) {
 }
 
 function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
-    $('#dataTable').empty()
-    $('#lazyLoadData').hide('fast')
-    lazyLoadCounter = 0
-    $('#lazyLoadData').removeClass("disabled")
+    resetLazyLoader()
     var timeoutMs = 0
     if (regionObject.region !== null && enableAnimation) {
         timeoutMs = 1500
@@ -271,6 +274,11 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
         moveStack.length < maxAllowdedLevel && (path = regionObject.id + '.json')
         drawMap(canvas, path, (regionObject) => {
             moveStack.length < maxAllowdedLevel && moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
+            if (!enableAnimation) {
+                moveStack.pop()
+                moveStack.push(regionObject)
+                resetLazyLoader()
+            }
             showData(regionObject)
         })
     }, timeoutMs)
@@ -297,10 +305,16 @@ showData({ id: 'regions', name: '' })
 var lazyLoadCounter = 0
 var lazyLoadingMaxCount = 0
 
-$('#tableData').on("click", async function () {
+function resetLazyLoader() {
     $('#dataTable').empty()
     lazyLoadCounter = 0
+    $('#dataLoading').hide('fast')
+    $('#lazyLoadData').hide('fast')
     $('#lazyLoadData').removeClass("disabled")
+}
+
+$('#tableData').on("click", async function () {
+    resetLazyLoader()
     $('#dataLoading').show('fast', async () => {
         const respSettings = await settingsPromise
         const respData = await dataPromise
@@ -308,7 +322,7 @@ $('#tableData').on("click", async function () {
         lazyLoadingMaxCount = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data).length
         const filteredData = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data, lazyLoadCounter, 10, compareByKeyDataTable)
         lazyLoadCounter = lazyLoadCounter + 10
-        if(lazyLoadCounter > lazyLoadingMaxCount){
+        if (lazyLoadCounter > lazyLoadingMaxCount) {
             $('#lazyLoadData').addClass("disabled")
         }
         let header = '<div class="row header"><div class="cell">Πρόγραμμα</div>' +
@@ -339,7 +353,7 @@ $('#lazyLoadData').on("click", async function () {
     $('#dataLazyLoading').show('fast', async () => {
         const filteredData = await getFilterPerIdAndWhereClause(regionObject.id, respSettings.data.whereClause, respData.data.data, lazyLoadCounter, 10, compareByKeyDataTable)
         lazyLoadCounter = lazyLoadCounter + 10
-        if(lazyLoadCounter > lazyLoadingMaxCount){
+        if (lazyLoadCounter > lazyLoadingMaxCount) {
             $('#lazyLoadData').addClass("disabled")
         }
         filteredData.forEach((elem) => {
@@ -356,5 +370,3 @@ $('#lazyLoadData').on("click", async function () {
     })
     $('#dataLazyLoading').hide('fast')
 })
-
-
