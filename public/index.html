@@ -76,7 +76,8 @@
                 <div class="collapse navbar-collapse filodimos-center-banner" id="filodimos-navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link text-white" href="/?message=false">Αρχική <span class="sr-only">(current)</span></a>
+                            <a class="nav-link text-white" href="/?message=false">Αρχική <span
+                                    class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/programma.html">Το Πρόγραμμα</a>
@@ -96,9 +97,15 @@
             <p></p>
             <div id="usage-box" class="alert alert-info alert-dismissible">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p><b>Επιλέξτε</b> μια <b>περιοχή</b> πάνω στο χάρτη για να δείτε τις χρηματοδοτήσεις του
-                    προγράμματος
-                    <b>Φιλόδημος Ι και ΙΙ</b></p>
+                <ul style="list-style-type: none; padding-inline-start: 20px!important;">
+                    <li><b>Επιλέξτε</b> μια <b>περιοχή</b> πάνω στο χάρτη για να δείτε τις χρηματοδοτήσεις του
+                        προγράμματος
+                        <b>Φιλόδημος Ι και ΙΙ</b>.</li>
+                    <li><b>Πατήστε</b> το κουμπί <b>Επιστροφή</b> για να επιστρέψετε στο προηγούμενο επίπεδο του χάρτη.
+                    </li>
+                    <li><b>Πατήστε</b> το κουμπί <b>Αναλυτικά</b> για να δείτε αναλυτικά τις χρηματοδοτήσεις για την
+                        περιοχή που βρίσκεστε στο χάρτη.</li>
+                </ul>
             </div>
             <div class="map-chart">
                 <div class="row">
@@ -161,7 +168,8 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Μήνυμα Υπουργού Εσωτερικών<br />Αλέξη
+                            <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Μήνυμα Υπουργού
+                                Εσωτερικών<br />Αλέξη
                                 Χαρίτση</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -169,7 +177,8 @@
                         </div>
                         <div class="modal-body">
                             <img id="xaritsis" src="img/xaritsis.jpg" class="modal-img" />
-                            <p style="text-align:justify;">Μια από τις πρώτες και βασικές δεσμεύσεις αυτής της κυβέρνησης ήταν η ενίσχυση της
+                            <p style="text-align:justify;">Μια από τις πρώτες και βασικές δεσμεύσεις αυτής της
+                                κυβέρνησης ήταν η ενίσχυση της
                                 Τοπικής Αυτοδιοίκησης η οποία υπήρξε από τους μεγαλύτερους χαμένους της κρίσης. Αυτή τη
                                 δέσμευση κάνουμε πράξη στο Υπουργείο Εσωτερικών. Παρά τους δημοσιονομικούς περιορισμούς,
                                 αυξήσαμε για πρώτη φορά μετά από χρόνια την κρατική χρηματοδότηση στους ΟΤΑ και
@@ -229,7 +238,7 @@
         })
 
         $(window).on('load', function () {
-            if(getUrlParameter('message') !== 'false')
+            if (getUrlParameter('message') !== 'false')
                 $('#ypesMessage').modal('show');
         });
     </script>
