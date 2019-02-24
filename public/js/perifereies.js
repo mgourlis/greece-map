@@ -261,23 +261,27 @@ function animateTransition(region, timeoutMs) {
 function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
     resetLazyLoader()
     var timeoutMs = 0
-    if (regionObject.region !== null && enableAnimation) {
-        timeoutMs = 1500
-        animateTransition(regionObject.region, timeoutMs)
-    }
-    setTimeout(() => {
-        var path = null
-        moveStack.length < maxAllowdedLevel && (path = regionObject.id + '.json')
-        drawMap(canvas, path, (regionObject) => {
-            moveStack.length < maxAllowdedLevel && moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
-            if (!enableAnimation) {
-                moveStack.pop()
-                moveStack.push(regionObject)
-                resetLazyLoader()
-            }
-            showData(regionObject)
-        })
-    }, timeoutMs)
+    $('#mapLoading').show('fast', async () => {
+        if (regionObject.region !== null && enableAnimation) {
+            timeoutMs = 1500
+            animateTransition(regionObject.region, timeoutMs)
+        }
+        setTimeout(() => {
+            var path = null
+            moveStack.length < maxAllowdedLevel && (path = regionObject.id + '.json')
+
+            drawMap(canvas, path, (regionObject) => {
+                moveStack.length < maxAllowdedLevel && moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel)
+                if (!enableAnimation) {
+                    moveStack.pop()
+                    moveStack.push(regionObject)
+                    resetLazyLoader()
+                }
+                showData(regionObject)
+            })
+            $('#mapLoading').hide('slow')
+        }, timeoutMs)
+    })
     moveStack.push(regionObject)
     moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
         moveStack.pop()
