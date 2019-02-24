@@ -106,7 +106,7 @@ text.ct-label {
 .goToTop {
   position: fixed;
   top: 0;
-  height: 100px;
+  min-height: 100px;
   z-index: 99;
   -moz-box-shadow: 0 0 10px 0 #000000;
   -webkit-box-shadow: 0 0 10px 0 #000000;
@@ -216,10 +216,17 @@ text.ct-label {
     font-weight: bold;
   }
 
+  .filodimos-center-banner{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 70%;
+  }
+
   .goToTop {
     position: fixed;
     top: 0;
-    height: 150px;
+    min-height: 80px;
     z-index: 99;
   }
 
