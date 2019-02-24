@@ -333,7 +333,7 @@ async function showTableData() {
         let header = '<div class="row header"><div class="cell">Πρόγραμμα</div>' +
             '<div class="cell">Έτος</div><div class="cell">Κατηγορία</div>' +
             '<div class="cell">Δήμος</div><div class="cell">Φιλόδημος</div>' +
-            '<div class="cell"> Ίδιοι Πόροι</div><div class="cell">Σύνολο</div></div> '
+            '<div class="cell"> Ίδιοι Πόροι Δήμου</div><div class="cell">Σύνολο</div></div> '
         $('#dataTable').append(header)
         filteredData.forEach((elem) => {
             const zero = 0
@@ -342,7 +342,7 @@ async function showTableData() {
                 '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
                 '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
                 '</div><div class="cell" data-title="Φιλόδημος">' + (elem.pdeYpes ? (1 * elem.pdeYpes.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
-                '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Ίδιοι Πόροι Δήμου">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
                 '</div><div class="cell" data-title="Σύνολο"><b>' + (elem.total ? (1 * elem.total.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) + '</b></div></div>'
             $('#dataTable').append(elemToAppend)
         })
@@ -368,7 +368,7 @@ async function getMoreTableData() {
                 '</div><div class="cell" data-title="Κατηγορία">' + elem.category +
                 '</div><div class="cell" data-title="Δήμος">' + elem.municipalityName +
                 '</div><div class="cell" data-title="Φιλόδημος">' + (elem.pdeYpes ? (1 * elem.pdeYpes.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
-                '</div><div class="cell" data-title="Ίδιοι Πόροι">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
+                '</div><div class="cell" data-title="Ίδιοι Πόροι Δήμου">' + (elem.ownResources ? (1 * elem.ownResources.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) +
                 '</div><div class="cell" data-title="Σύνολο"><b>' + (elem.total ? (1 * elem.total.replace(/,/g, '')).toLocaleString('el', { style: 'currency', currency: 'EUR' }) : zero.toLocaleString('el', { style: 'currency', currency: 'EUR' })) + '</b></div></div>'
             $('#dataTable').append(elemToAppend)
         })
