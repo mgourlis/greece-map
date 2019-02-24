@@ -21,9 +21,6 @@ function compareByKey(key, desc = false) {
 
 const mobileDetector = new MobileDetect(window.navigator.userAgent)
 var animationsEnabled = mobileDetector.mobile() ? false : true
-$(document).ready(function () {
-    alert(mobileDetector.mobile())
-})
 
 
 /* ---------------------------------- SHOW DATA START --------------------------------- */
