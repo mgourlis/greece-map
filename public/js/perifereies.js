@@ -18,7 +18,6 @@ function compareByKey(key, desc = false) {
 }
 
 /*Disable animations if Mobile or Tablet*/
-
 const mobileDetector = new MobileDetect(window.navigator.userAgent)
 var animationsEnabled = mobileDetector.mobile() ? false : true
 
