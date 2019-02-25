@@ -46,9 +46,10 @@
   background: #fff;
 }
 
-.table .row.header {
-  color: #ffffff;
-  background: #F39C12;
+.table .row.header, .row.header:hover {
+  color: #ffffff !important;
+  background: #F39C12 !important;
+  cursor: default !important;
 }
 
 .table .row.tableFooter {
