@@ -1,4 +1,4 @@
-/*global  $ axios Raphael Chartist*/
+/*global  $ axios Raphael Chartist MobileDetect*/
 
 /* ---------SETTINGS--------- */
 const maxAllowdedLevel = 4
