@@ -319,7 +319,7 @@ function resetLazyLoader() {
     lazyLoadCounter = 0
     $('#dataLoading').hide('fast')
     $('#lazyLoadData').hide('fast')
-    $('#lazyLoadData').removeClass("disabled")
+    $('#lazyLoadData').removeClass('disabled')
 }
 
 async function showTableData() {
