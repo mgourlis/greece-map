@@ -44,7 +44,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
 }
 
 .ct-label {
-  padding-right: 32px;
+  padding-right: 25px;
   font-weight: bold;
   color: #343a40;
 }
@@ -241,9 +241,9 @@ text.ct-label {
   }
 }
 
-@media screen and (min-width: 844px) {
+@media screen and (max-width: 844px) {
   .ct-label {
-    padding-right: 32px;
+    padding-right: 25px;
     font-size: 70%;
     font-weight: bold;
     color: #343a40;
@@ -256,7 +256,7 @@ text.ct-label {
 }
 
 .modal-img{
-  height:120px;
+  height:150px;
   -webkit-box-shadow: 0px 0px 10px 0px #4d4d4d;
   -moz-box-shadow: 0px 0px 10px 0px #4d4d4d;
   box-shadow: 0px 0px 10px 0px #4d4d4d;

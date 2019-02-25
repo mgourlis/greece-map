@@ -303,13 +303,9 @@ moveInHierarchy({ id: 'regions', name: '', region: null }, animationsEnabled, ma
 showData({ id: 'regions', name: '' })
 
 
-$('#tableData').on('click', ()=> {
-    showTableData()
-    $('html, body').animate({
-        scrollTop: $('#tableData').offset().top - 100
-    }, 1000)})
+$('#tableData').on("click", showTableData)
 
-$('#lazyLoadData').on('click', getMoreTableData)
+$('#lazyLoadData').on("click", getMoreTableData)
 
 var lazyLoadCounter = 0
 var lazyLoadingMaxCount = 0
@@ -351,9 +347,10 @@ async function showTableData() {
             $('#dataTable').append(elemToAppend)
         })
     })
-
+    $('html, body').animate({
+        scrollTop: $('#lazyLoadData')
+    }, 1000)
     $('#lazyLoadData').show('fast')
-    
     $('#dataLoading').hide('fast')
 }
 

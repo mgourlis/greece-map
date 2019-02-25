@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="img/favicon.ico">
-    <title>Φιλόδημος - Υπουργείο Εσωτερικών</title>
+    <title>ΦιλόΔημος - Υπουργείο Εσωτερικών</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -13,13 +13,14 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
 
-    <meta property="og:title" content="Φιλόδημος - Υπουργείο Εσωτερικών">
+    <meta property="og:title" content="ΦιλόΔημος - Υπουργείο Εσωτερικών">
     <meta property="og:description"
-        content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος Φιλόδημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
+        content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
     <meta property="og:image" content="http://ypes-map.mgourlis.webfactional.com/img/filodimos-social-ypes.jpg">
     <meta property="og:url" content="http://filodimos.ypes.gr">
-    <meta name="twitter:title" content="Φιλόδημος - Υπουργείο Εσωτερικών">
-    <meta name="twitter:description" content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος Φιλόδημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
+    <meta name="twitter:title" content="ΦιλόΔημος - Υπουργείο Εσωτερικών">
+    <meta name="twitter:description"
+        content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
     <meta name="twitter:image" content="http://ypes-map.mgourlis.webfactional.com/img/filodimos-social-ypes.jpg">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -88,6 +89,13 @@
     <!--BODY-->
     <div id="content" class="filodimos-container-shadow">
         <div class="container">
+            <div id="multimedia-content" class="col-xs-12 col-sm-12 col-md-8 offset-md-4 col-lg-6 offset-lg-3" style="padding-top:50px;">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/FKNav8eLSpc"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
             <div class="m-p-g" style="padding-top:50px">
                 <div class="m-p-g__thumbs" data-google-image-layout data-max-height="350">
                     <img src="img/thumbs/filodimos-info-thumb.jpg" data-full="img/filodimos-info.jpg"
@@ -104,17 +112,19 @@
     <!--FOOTER-->
     <footer class="footer">
         <div class="container">
-            <p>Φιλόδημος - Υπουργείο Εσωτερικών</p>
+            <p>ΦιλόΔημος - Υπουργείο Εσωτερικών</p>
             <p>
                 <ul class="social">
                     <li> <a href="https://www.facebook.com/ypesgr/" target="_blank"> <i class="fab fa-facebook-f"> </i>
                         </a> </li>
                     <li> <a href="https://twitter.com/ypesgr" target="_blank"> <i class="fab fa-twitter"> </i> </a>
                     </li>
+                    <li> <a href="https://www.youtube.com/channel/UCTdmk7RfXyzrVTDuEwrl9mQ" target="_blank"> <i class="fab fa-youtube"> </i> </a>
+                    </li>
                 </ul>
             </p>
             <p class="credits">
-                Κατασκευή <a href="http://mgourlis.gr">Μύρων Γουρλής</a> & Αλέξης Παναγιωτόπουλος<br />
+                Κατασκευή <a href="http://mgourlis.gr" target="_blank">Μύρων Γουρλής</a> & Αλέξης Παναγιωτόπουλος<br />
             </p>
         </div>
     </footer>
@@ -141,13 +151,14 @@
                 var prevHeight = 0;
                 var sumHeight = 0;
                 $(".m-p-g__thumbs *").each(function (e) {
-                    if ($(this).attr('style')) {
+                    if ($(this).height()) {
                         if ($(this).height() == prevHeight) sumHeight -= prevHeight;
                         sumHeight += $(this).height();
                         prevHeight = $(this).height();
                     }
                 });
-                $("#content").height(sumHeight + 300);
+                sumHeight += $("#multimedia-content").height();
+                $("#content").height(sumHeight + 400);
             }, 0)
         });
 
@@ -157,13 +168,14 @@
                 var prevHeight = 0;
                 var sumHeight = 0;
                 $(".m-p-g__thumbs *").each(function (e) {
-                    if ($(this).attr('style')) {
+                    if ($(this).height()) {
                         if ($(this).height() == prevHeight) sumHeight -= prevHeight;
                         sumHeight += $(this).height();
                         prevHeight = $(this).height();
                     }
                 });
-                $("#content").height(sumHeight + 300);
+                sumHeight += $("#multimedia-content").height();
+                $("#content").height(sumHeight + 400);
             }, 0)
         });
     </script>
