@@ -263,7 +263,7 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
     var timeoutMs = 0
     $('#mapLoading').show('fast', async () => {
         if (regionObject.region !== null && enableAnimation) {
-            timeoutMs = 1500
+            timeoutMs = 1000
             animateTransition(regionObject.region, timeoutMs)
         }
         setTimeout(() => {
