@@ -475,9 +475,9 @@ $('#shareMap').on('click', () => {
 })
 
 $('#embededMap').on('click', () => {
-    $('#embedCode').val('<iframe width="300" height="750" frameBorder="0" scrolling="no" src="' +
+    $('#embedCode').val('<embed width="100%" height="780" src="' +
         baseUrl + 'frame.html?id=' +
         moveStack[moveStack.length - 1].id +
-        '"></iframe>')
+        '"/>')
     $('#embedModal').modal('show')
 })
