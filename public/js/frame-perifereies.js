@@ -102,13 +102,14 @@ function createGraph(imgUrls, labelValuePairs) {
             })
         ]
     }, {
+            height: '450',
             fullWidth: true,
             stretch: true,
             seriesBarDistance: 10,
             horizontalBars: true,
             axisX: {
-                labelInterpolationFnc: function (value) {
-                    return toRelativeAmount(value)
+                labelInterpolationFnc: function (value, index) {
+                    return '';
                 }
             }
         }).on('draw', function (context) {
@@ -127,8 +128,8 @@ function createGraph(imgUrls, labelValuePairs) {
                     })
                 )
                 context.group.elem('text', {
-                    x: context.x2 + 5,
-                    y: context.y1 + 5
+                    x: context.x2 - 70 < 60 ? context.x2 + 5 : context.x2 - 70,
+                    y: context.y1 + 5,
                 }, 'ct-label').text(toRelativeAmount(context.series[context.index].value))
             }
         })
@@ -237,7 +238,7 @@ function getRegionPrefix(id) {
     if (level === '1')
         return 'Περιφέρεια'
     else if (level === '2')
-        return 'Περιφερειακή Ενότητα'
+        return 'Π.Ε.'
     else if (level === '3')
         return 'Δήμος'
     else
@@ -286,17 +287,6 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
             })
             $('#mapLoading').hide('slow')
         }, timeoutMs)
-        if (getRegionPrefix(regionObject.id) !== 'Δήμος') {
-            $('#shareMap').text('Μοιραστείτε την ' + getRegionPrefix(regionObject.id))
-            $('#embededMap').text('Ενσωματώστε την ' + getRegionPrefix(regionObject.id))
-        } else {
-            $('#shareMap').text('Μοιραστείτε τoν  Δήμο')
-            $('#embededMap').text('Ενσωματώστε τoν  Δήμο')
-        }
-        document.title = 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name
-        $('meta[property="og:title"]').attr("content", 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name);
-        $('meta[property="og:url"]').attr("content", baseUrl + '?id=' + regionObject.id);
-        $('meta[property="twitter:title"]').attr("content", 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name);
     })
     moveStack.push(regionObject)
     moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
@@ -329,7 +319,7 @@ async function initializeRegionObjectFromId(id, enableAnimation) {
             for (j = 0; j < regions.length; j++) {
                 if (level + '-' + number === regions[j].id) {
                     const upper = moveStack.pop()
-                    if (level - 1 >= 0)
+                    if(level - 1 >= 0)
                         moveStack.push(await initializeRegionObjectFromId(level - 1 + '-' + i))
                     if (upper) moveStack.push(upper)
                     regionObject.id = regions[j].id
@@ -460,24 +450,3 @@ async function getMoreTableData() {
     })
     $('#dataLazyLoading').hide('fast')
 }
-
-const facebookSharerUrl = 'https://www.facebook.com/sharer/sharer.php?u='
-const twitterSharerUrl = 'http://www.twitter.com/share?url='
-
-$('#shareMap').on('click', () => {
-    $('#facebookShare').off('click').click(() => {
-        window.open(facebookSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
-    })
-    $('#twitterShare').off('click').click(() => {
-        window.open(twitterSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
-    })
-    $('#shareOptionsModal').modal('show')
-})
-
-$('#embededMap').on('click', () => {
-    $('#embedCode').val('<iframe width="300" height="750" frameBorder="0" scrolling="no" src="' +
-        baseUrl + 'frame.html?id=' +
-        moveStack[moveStack.length - 1].id +
-        '"></iframe>')
-    $('#embedModal').modal('show')
-})

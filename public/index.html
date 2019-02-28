@@ -23,7 +23,7 @@
     <meta property="og:description"
         content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
     <meta property="og:image" content="http://ypes-map.mgourlis.webfactional.com/img/filodimos-social-ypes.jpg">
-    <meta property="og:url" content="http://filodimos.ypes.gr">
+    <meta property="og:url" content="http://ypes-map.mgourlis.webfactional.com">
     <meta name="twitter:title" content="ΦιλόΔημος - Υπουργείο Εσωτερικών">
     <meta name="twitter:description"
         content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
@@ -115,11 +115,28 @@
                     </a>
                 </div>
                 <div class="row">
-                    <div id="map" class="col-lg-7 col-md-12 col-sm-12 col-12">
-                        <div id="mapLoading"
-                            style="top: 50%;right: 50%;position: absolute; height: 2rem; width: 2rem;display: none;"
-                            class="spinner-border text-primary" role="status">
-                            <span class="sr-only"> Επεξεργασία...</span>
+                    <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                        <div id="map">
+                            <div id="mapLoading"
+                                style="top: 50%;right: 50%;position: absolute; height: 2rem; width: 2rem;display: none;"
+                                class="spinner-border text-primary" role="status">
+                                <span class="sr-only"> Επεξεργασία...</span>
+                            </div>
+                        </div>
+                        <div class="col-7" style="margin: auto;">
+                            <br />
+                            <div class="row">
+                                <div class="col-6">
+                                    <a id="embededMap" class="btn btn-secondary underMapButton"
+                                        href="javascript:;">Ενσωματώστε την
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a id="shareMap" class="btn btn-secondary underMapButton"
+                                        href="javascript:;">Μοιραστείτε την </a>
+                                </div>
+                            </div>
+                            <br />
                         </div>
                     </div>
                     <div id="results"
@@ -135,7 +152,7 @@
                 <div style="margin-top:  50px" class="row">
                     <div style="margin:auto">
                         <a id="tableData" href="javascript:;" class="btn btn-filodimos">
-                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i></i> Αναλυτικά
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Αναλυτικά
                         </a>
                         <div id="dataLoading" style="display:none;" class="spinner-border text-warning" role="status">
                             <span class="sr-only"></span>
@@ -156,7 +173,7 @@
                 <div class="row">
                     <div style="margin:auto">
                         <a id="lazyLoadData" style="display:none" href="javascript:;" class="btn btn-filodimos">
-                            <i class="fas fa-arrow-down"></i></i></i> Περισσότερα αποτελέσματα
+                            <i class="fas fa-arrow-down"></i> Περισσότερα αποτελέσματα
                         </a>
                         <div id="dataLazyLoading" style="display:none" class="spinner-border text-warning"
                             role="status">
@@ -179,17 +196,82 @@
                         </div>
                         <div class="modal-body">
                             <img id="xaritsis" src="img/xaritsis.jpg" class="modal-img" />
-                            <p style="text-align:justify;">Μια από τις βασικές δεσμεύσεις και στρατηγική επιλογή αυτής
-                                της κυβέρνησης είναι η ενίσχυση της Τοπικής Αυτοδιοίκησης, η οποία υπήρξε ένα από τα
-                                μεγαλύτερα θύματα της κρίσης.
-                                Αυτή τη δέσμευση κάνουμε πράξη στο Υπουργείο Εσωτερικών. Παρά τους δημοσιονομικούς
-                                περιορισμούς, αυξήσαμε για πρώτη φορά μετά από χρόνια την κρατική χρηματοδότηση στους
-                                ΟΤΑ και δημιουργήσαμε νέα χρηματοδοτικά εργαλεία για να καλύψουν βασικές τους ανάγκες σε
-                                υποδομές, με έργα που θα έπρεπε να έχουν υλοποιηθεί εδώ και δεκαετίες. Προχωράμε σε
-                                χιλιάδες στοχευμένες προσλήψεις μόνιμου προσωπικού για την κάλυψη των τεράστιων κενών
-                                που προκάλεσαν τα μνημόνια και οι νεοφιλελεύθερες πολιτικές. Είμαστε στο πλευρό των
-                                τοπικών κοινωνιών για δίκαιη ανάπτυξη και καλύτερη ποιότητα ζωής.
+                            <p style="text-align:justify;">Η ενίσχυση της Τοπικής Αυτοδιοίκησης είναι στρατηγική επιλογή
+                                της κυβέρνησής μας αλλά και δέσμευσή μας προς τους πολίτες. Δέσμευση την οποία κάνουμε
+                                καθημερινά πράξη στο Υπουργείο Εσωτερικών, στηρίζοντας τους δήμους και της περιφέρειες
+                                με κάθε δυνατό μέσο. Στον κρίσιμο τομέα της χρηματοδότησης, αυξήσαμε τους πόρους προς
+                                τους ΟΤΑ και δημιουργήσαμε νέα καινοτόμα χρηματοδοτικά εργαλεία για τη στοχευμένη
+                                ενίσχυσή τους.</p>
+                            <p style="text-align:justify;">
+                                Σημαία αυτής της προσπάθειας είναι το Πρόγραμμα Φιλόδημος μέσα από το οποίο έχουν
+                                ενεργοποιηθεί, σε λίγους μόλις μήνες, περισσότερα από 2 δισ. ευρώ για τους δήμους όλης
+                                της χώρας, με σχεδόν 1 δισ. να έχει ήδη ενταχθεί. Πρόσθετοι πόροι που δίνουν για πρώτη
+                                φορά τη δυνατότητα στους ΟΤΑ να
+                                υλοποιήσουν βασικές υποδομές από την ύδρευση και την αποχέτευση μέχρι την αντιπλημμυρική
+                                προστασία και την αγροτική οδοποιία και από τα σχολικά κτίρια και τις αθλητικές
+                                εγκαταστάσεις μέχρι την αξιοποίηση του κτιριακού τους αποθέματος.</p>
+                            <p style="text-align:justify;">
+                                Υποδομές κρίσιμες για την ασφάλεια και την ποιότητα ζωής των πολιτών που χρονίζουν εδώ
+                                και δεκαετίες, τώρα ολοκληρώνονται, ενώ έργα που αναβαθμίζουν τις τοπικές αναπτυξιακές
+                                δυνατότητες παίρνουν τον δρόμο της υλοποίησης. Ο ΦιλόΔημος αλλάζει κυριολεκτικά, το
+                                πρόσωπο της Τοπικής Αυτοδιοίκησης, προς όφελος των πολιτών και των τοπικών κοινωνιών.
+
                             </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-filodimos" data-dismiss="modal">Κλείσιμο</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="shareOptionsModal" tabindex="-1" role="dialog"
+                aria-labelledby="shareOptionsTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Μοιραστείτε στα
+                                Social Media</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a id="facebookShare" class="btn btn-secondary" href="javascript:;"><i
+                                            class="fab fa-facebook"> </i> Facebook</a>
+                                </div>
+                                <div class="col-6">
+                                    <a id="twitterShare" class="btn btn-secondary" href="javascript:;"><i
+                                            class="fab fa-twitter"> </i> Twitter</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-filodimos" data-dismiss="modal">Κλείσιμο</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="embedModal" tabindex="-1" role="dialog" aria-labelledby="embedTitle"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Ενσωματώστε στον
+                                ιστότοπό σας</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Αντιγράψτε το παρακάτω <i>html script</i> για να ενσωματώσετε τις
+                                        πληροφορίες, της περιοχής που βρίσκετε ο χάρτης, στον ιστότοπό σας.</p>
+                                    <textarea class="form-control" id="embedCode" name="embedCode" rows="4"></textarea>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-filodimos" data-dismiss="modal">Κλείσιμο</button>
@@ -233,10 +315,10 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="vendor/mobile-detect/mobile-detect.min.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/perifereies.js"></script>
     <script src="vendor/bootstrap/js/popper.min.js"></script>
     <script src="vendor/select2/select2.min.js"></script>
-    <script src="js/utils.js"></script>
     <script>
         $(window).bind('scroll', function () {
             var navHeight = $('#filodimos-banner').height();

@@ -3,30 +3,23 @@
   width: 100%;
 }
 
-
-.map-chart {
-  position: relative;
-  padding-top: 1rem;
-  padding-bottom: 9rem;
-}
-
 .map {
     max-width: 800px;
     max-height: 600px;
 }
 
-.graphs-container{
-  padding-inline-start: 50px;
-}
-
-.ct-golden-section{
-  padding-bottom: 17rem;
+[dir=ltr] .graphs-container{
+  padding-inline-start: 80px;
+  -moz-padding-start: 80px;
+  -webkit-padding-start: 80px;
+  -khtml-padding-start: 80px;
+  -o-padding-start: 80px;
+  padding-start: 80px;
+  padding-left: 80px;
 }
 
 svg.ct-chart-bar, svg.ct-chart-line{
   overflow: visible;
-  padding-top: 20px;
-  margin-bottom: 120px;
 }
 .ct-label.ct-label.ct-horizontal.ct-end {
   position: relative;
@@ -92,9 +85,7 @@ text.ct-label {
 
 .filodimos-container-bg{
   position: relative;
-  padding-top: 20px;
   background-color: #ffffff;
-  background-image: url('/img/container-bg.png');
 }
 
 .filodimos-container-shadow{
@@ -203,71 +194,6 @@ text.ct-label {
   color: #A0A0A0 !important;
 }
 
-.underMapButton{
-  font-size: 80% !important;
-}
-
-@media screen and (max-width: 640px) {
-  .ct-label {
-    padding-right: 25px;
-    font-size: 60%;
-    font-weight: bold;
-    color: #343a40;
-  }
-
-  text.ct-label {
-    font-size: 65%;
-    font-weight: bold;
-  }
-
-  .filodimos-center-banner{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-size: 70%;
-  }
-
-  .goToTop {
-    position: fixed;
-    top: 0;
-    min-height: 80px;
-    z-index: 99;
-  }
-
-  .credits{
-    position: absolute;
-    right: 20px;
-    bottom: 0;
-    text-align: right;
-    font-size: 0.2rem;
-    display: none;
-    color: #959595;
-  }
-
-  .underMapButton{
-    font-size: 60% !important;
-  }
-}
-
-@media screen and (min-width: 844px) {
-  .ct-label {
-    padding-right: 25px;
-    font-size: 70%;
-    font-weight: bold;
-    color: #343a40;
-  }
-
-  text.ct-label {
-    font-size: 80%;
-    font-weight: bold;
-  }
-
-  .underMapButton{
-    font-size: 70% !important;
-  }
-
-}
-
 .modal-img{
   height:150px;
   -webkit-box-shadow: 0px 0px 10px 0px #4d4d4d;
@@ -282,5 +208,17 @@ text.ct-label {
   margin-right:25px;;
   overflow:hidden;
   float: left;
+}
+
+.filodimos-title{
+  font-weight: bold;
+  font-size: 80%;
+}
+
+@media screen and (max-width: 322px) {
+  .filodimos-title{
+    font-weight: bold;
+    font-size: 72%;
+  }
 }
 
