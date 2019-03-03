@@ -1,7 +1,7 @@
 /*global  $ axios Raphael Chartist MobileDetect*/
 
 /* ---------SETTINGS--------- */
-const baseUrl = 'http://ypes-map.mgourlis.webfactional.com/'
+let baseUrl = 'http://ypes-map.mgourlis.webfactional.com/'
 const maxAllowdedLevel = 4
 const compareByKeyGraph = 'category'
 const compareByKeyDataTable = 'municipalityName'
@@ -294,9 +294,9 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
             $('#embededMap').text('Ενσωματώστε τoν  Δήμο')
         }
         document.title = 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name
-        $('meta[property="og:title"]').attr("content", 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name);
-        $('meta[property="og:url"]').attr("content", baseUrl + '?id=' + regionObject.id);
-        $('meta[property="twitter:title"]').attr("content", 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name);
+        $('meta[property="og:title"]').attr('content', 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
+        $('meta[property="og:url"]').attr('content', baseUrl + '?id=' + regionObject.id)
+        $('meta[property="twitter:title"]').attr('content', 'ΦιλόΔημος - ΥΠ.ΕΣ. - ' + getRegionPrefix(regionObject.id) + ' ' + regionObject.name)
     })
     moveStack.push(regionObject)
     moveStack.length > 1 ? $('#back').removeClass('disabled').off('click').click(() => {
@@ -312,8 +312,6 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 }
 
 const moveStack = []
-const settingsPromise = axios.get(baseUrl + 'settings.json')
-const dataPromise = axios.get(baseUrl + 'data.json')
 
 async function initializeRegionObjectFromId(id, enableAnimation) {
     let regionObject = { id: '0-1', name: '', region: null }
@@ -364,7 +362,11 @@ async function initializeRegionObjectFromId(id, enableAnimation) {
     }
 }
 
-async function start(id = '0-1') {
+const settingsPromise = axios.get(baseUrl + 'settings.json')
+const dataPromise = axios.get(baseUrl + 'data.json')
+
+async function start(host, id = '0-1') {
+    baseUrl = host + '/'
     $('#mapLoading').show('fast')
     let regionObject = await initializeRegionObjectFromId(id, animationsEnabled)
     $('#mapLoading').show('slow')
@@ -377,9 +379,6 @@ function parseIntDecimal(x) {
     if (isNaN(parsed)) { return 0 }
     return parsed
 }
-
-start(getUrlParameter('id'))
-
 
 $('#tableData').on('click', () => {
     showTableData()
@@ -466,10 +465,10 @@ const twitterSharerUrl = 'http://www.twitter.com/share?url='
 
 $('#shareMap').on('click', () => {
     $('#facebookShare').off('click').click(() => {
-        window.open(facebookSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+        window.open(facebookSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600')
     })
     $('#twitterShare').off('click').click(() => {
-        window.open(twitterSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+        window.open(twitterSharerUrl + encodeURIComponent(baseUrl + '?id=' + moveStack[moveStack.length - 1].id), '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600')
     })
     $('#shareOptionsModal').modal('show')
 })
@@ -478,6 +477,6 @@ $('#embededMap').on('click', () => {
     $('#embedCode').val('<embed width="100%" height="780" src="' +
         baseUrl + 'frame.html?id=' +
         moveStack[moveStack.length - 1].id +
-        '"/>')
+        '" />')
     $('#embedModal').modal('show')
 })

@@ -17,19 +17,7 @@
   },
   "homepage": "https://github.com/mgourlis/greece-map#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.7.1",
-    "axios": "^0.18.0",
-    "bootstrap": "^4.2.1",
-    "eslint": "^5.12.1",
-    "express": "^4.16.4",
-    "fontawesome": "^5.6.3",
-    "jquery": "^3.3.1",
-    "json-xml": "^1.0.9",
-    "mobile-detect": "^1.4.3",
-    "popper": "^1.0.1",
-    "ramda": "^0.26.1",
-    "snapsvg": "^0.5.1",
-    "svgson": "^3.0.0",
-    "xml-js": "^1.6.9"
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
   }
 }

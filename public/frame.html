@@ -79,6 +79,47 @@
             </div>
             <hr>
         </div>
+        <div class="modal fade" id="ypesMessage" tabindex="-1" role="dialog" aria-labelledby="ypesMessageTitle"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Μήνυμα Υπουργού
+                            Εσωτερικών<br />Αλέξη
+                            Χαρίτση</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="xaritsis" src="img/xaritsis.jpg" class="modal-img" />
+                        <p style="text-align:justify;">Η ενίσχυση της Τοπικής Αυτοδιοίκησης είναι στρατηγική επιλογή
+                            της κυβέρνησής μας αλλά και δέσμευσή μας προς τους πολίτες. Δέσμευση την οποία κάνουμε
+                            καθημερινά πράξη στο Υπουργείο Εσωτερικών, στηρίζοντας τους δήμους και της περιφέρειες
+                            με κάθε δυνατό μέσο. Στον κρίσιμο τομέα της χρηματοδότησης, αυξήσαμε τους πόρους προς
+                            τους ΟΤΑ και δημιουργήσαμε νέα καινοτόμα χρηματοδοτικά εργαλεία για τη στοχευμένη
+                            ενίσχυσή τους.</p>
+                        <p style="text-align:justify;">
+                            Σημαία αυτής της προσπάθειας είναι το Πρόγραμμα Φιλόδημος μέσα από το οποίο έχουν
+                            προβλευθεί περισσότερα από 2 δισ. ευρώ για τους δήμους όλης της χώρας, με σχεδόν 1 δισ.
+                            να έχει ήδη ενεργοποιηθεί. Πρόσθετοι πόροι που δίνουν για πρώτη φορά τη δυνατότητα στους
+                            ΟΤΑ να υλοποιήσουν βασικές υποδομές από την ύδρευση και την αποχέτευση μέχρι την
+                            αντιπλημμυρική προστασία και την αγροτική οδοποιία και από τα σχολικά κτίρια και τις
+                            αθλητικές εγκαταστάσεις μέχρι την αξιοποίηση του κτιριακού τους αποθέματος.</p>
+                        <p style="text-align:justify;">
+                            Υποδομές κρίσιμες για την ασφάλεια και την ποιότητα ζωής των πολιτών που χρονίζουν εδώ
+                            και δεκαετίες, τώρα ολοκληρώνονται, ενώ έργα που αναβαθμίζουν τις τοπικές αναπτυξιακές
+                            δυνατότητες παίρνουν τον δρόμο της υλοποίησης. Ο ΦιλόΔημος αλλάζει κυριολεκτικά, το
+                            πρόσωπο της Τοπικής Αυτοδιοίκησης, προς όφελος των πολιτών και των τοπικών κοινωνιών.
+
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-filodimos" data-dismiss="modal">Κλείσιμο</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--BODY END-->
@@ -103,7 +144,7 @@
 
         $(window).on('load', function () {
             if (getUrlParameter('message') !== 'false')
-                $('#ypesMessage').modal('show');
+                //$('#ypesMessage').modal('show');
         });
     </script>
     <script>
