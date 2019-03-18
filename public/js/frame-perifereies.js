@@ -1,7 +1,6 @@
 /*global  $ axios Raphael Chartist MobileDetect*/
 
 /* ---------SETTINGS--------- */
-const baseUrl = 'http://ypes-map.mgourlis.webfactional.com/'
 const maxAllowdedLevel = 4
 const compareByKeyGraph = 'category'
 const compareByKeyDataTable = 'municipalityName'
@@ -189,7 +188,7 @@ function hslToRgb(h, s, l) {
 
 const drawMap = async function (canvas, path, onclick) {
     if (path !== null) {
-        const resp = await axios.get(baseUrl + path)
+        const resp = await axios.get(path)
 
         canvas.clear()
 
@@ -302,8 +301,8 @@ function moveInHierarchy(regionObject, enableAnimation, maxAllowdedLevel) {
 }
 
 const moveStack = []
-const settingsPromise = axios.get(baseUrl + 'settings.json')
-const dataPromise = axios.get(baseUrl + 'data.json')
+const settingsPromise = axios.get('settings.json')
+const dataPromise = axios.get('data.json')
 
 async function initializeRegionObjectFromId(id, enableAnimation) {
     let regionObject = { id: '0-1', name: '', region: null }
@@ -313,7 +312,7 @@ async function initializeRegionObjectFromId(id, enableAnimation) {
         const number = parseIntDecimal(id.split('-')[1])
         level === 3 ? maxRegions = 74 : level === 2 ? maxRegions = 13 : level === 1 ? maxRegions = 1 : maxRegions = 0
         for (i = 1; i <= maxRegions; i++) {
-            let url = baseUrl + (level - 1) + '-' + i + '.json'
+            let url = (level - 1) + '-' + i + '.json'
             let resp = await axios.get(url)
             let regions = resp.data.regions
             for (j = 0; j < regions.length; j++) {

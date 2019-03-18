@@ -118,11 +118,11 @@ text.ct-label {
 }
 
 .footer {
-  position: fixed;
+  position: relative;
   height: 100px;
+  margin-bottom: 0px;
   bottom: 0;
   color:#fff;
-  padding-top:20px;
   width: 100%;
   background: #c04023;
   background: -webkit-linear-gradient(to top, #c04023, #f5af19); 
