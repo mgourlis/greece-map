@@ -1,0 +1,225 @@
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.map {
+    max-width: 800px;
+    max-height: 600px;
+}
+
+[dir=ltr] .graphs-container{
+  padding-inline-start: 80px;
+  -moz-padding-start: 80px;
+  -webkit-padding-start: 80px;
+  -khtml-padding-start: 80px;
+  -o-padding-start: 80px;
+  padding-start: 80px;
+  padding-left: 80px;
+}
+
+svg.ct-chart-bar, svg.ct-chart-line{
+  overflow: visible;
+}
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  transform-origin: 50% 0;
+  transform: translate(-10%,100%) rotate(45deg);
+  white-space:nowrap;
+}
+  
+
+.ct-series-a .ct-bar {
+  stroke: #f5af19;
+  stroke-width: 32;
+}
+
+.ct-label {
+  padding-right: 25px;
+  font-size: 65%;
+  font-weight: bold;
+  color: #343a40;
+}
+
+text.ct-label {
+  font-size: 100%;
+  font-weight: bold;
+}
+
+.filodimos-banner{
+  height: 100px;
+  display: flex;
+  justify-content: center; /* Can be changed in the live sample */
+  background: url('/img/city-banner-long.png');
+}
+
+.filodimos-center-banner{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.filodimos-text{
+  padding: 30px 0px;
+  justify-content: center;
+}
+
+.filodimos-bg{
+  background-color: #c04023;
+  background-image: -webkit-linear-gradient( #c04023, #f5af19); 
+  background-image: linear-gradient( #c04023, #f5af19);
+}
+
+.btn-filodimos{
+  background-color: #F39C12 !important;
+  border-color: #F39C12 !important;
+  color: #fff !important;
+}
+ 
+.btn-filodimos:hover, .btn-filodimos:focus, .btn-filodimos:active, .btn-filodimos.active, .open .dropdown-toggle.btn-filodimos {
+  background-color: rgb(224, 145, 16) !important;
+  border-color: rgb(224, 145, 16) !important;
+  color: #fff !important;
+}
+
+.filodimos-container-bg{
+  position: relative;
+  background-color: #ffffff;
+}
+
+.filodimos-container-shadow{
+  -moz-box-shadow:    inset 0 0 10px 0 #000000;
+  -webkit-box-shadow: inset 0 0 10px 0 #000000;
+  box-shadow:         inset 0 0 10px 0 #000000;
+}
+
+.goToTop {
+  position: fixed;
+  top: 0;
+  min-height: 100px;
+  z-index: 99;
+  -moz-box-shadow: 0 0 10px 0 #000000;
+  -webkit-box-shadow: 0 0 10px 0 #000000;
+  box-shadow: 0 0 10px 0 #000000;
+}
+
+.goToTopBody {
+  padding-top: 100px;
+}
+
+.footer {
+  position: fixed;
+  height: 100px;
+  bottom: 0;
+  color:#fff;
+  padding-top:20px;
+  width: 100%;
+  background: #c04023;
+  background: -webkit-linear-gradient(to top, #c04023, #f5af19); 
+  background: linear-gradient(to top, #c04023, #f5af19);
+  text-align: center;
+  z-index:99;
+  -moz-box-shadow:  0 0 10px 0 #000000;
+  -webkit-box-shadow: 0 0 10px 0 #000000;
+  box-shadow: 0 0 10px 0 #000000;
+}
+
+.footer ul {
+  font-size: 13px;
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  margin-top: 15px;
+  color: #7F8C8D;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  /* For IE, the outcast */
+  zoom:1;
+  *display: inline;
+}
+
+.footer ul li a {
+  padding: 0 0 5px 0;
+  display: block;
+}
+
+.social li {
+  border: 2px solid #B5B5B5;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  float: left;
+  height: 36px;
+  line-height: 36px;
+  margin: 0 8px 0 0;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+  transition: all 0.5s ease 0s;
+  -moz-transition: all 0.5s ease 0s;
+  -webkit-transition: all 0.5s ease 0s;
+  -ms-transition: all 0.5s ease 0s;
+  -o-transition: all 0.5s ease 0s;
+}
+
+.social li a {
+  color: #EDEFF1;
+}
+
+.social li:hover {
+  border: 2px solid #2c3e50;
+  background: #2c3e50;
+}
+
+.social li a i {
+  font-size: 16px;
+  margin: 0 0 0 5px;
+  color: #EDEFF1 !important;
+}
+
+.credits{
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  text-align: right;
+  font-size: 0.5rem;
+  color: #959595;
+}
+
+.credits a{
+  color: #A0A0A0 !important;
+}
+
+.modal-img{
+  height:150px;
+  -webkit-box-shadow: 0px 0px 10px 0px #4d4d4d;
+  -moz-box-shadow: 0px 0px 10px 0px #4d4d4d;
+  box-shadow: 0px 0px 10px 0px #4d4d4d;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -khtml-border-radius: 8px;  
+  border-radius: 8px;
+  border:solid white 3px;
+  float:left;
+  margin-right:25px;;
+  overflow:hidden;
+  float: left;
+}
+
+.filodimos-title{
+  font-weight: bold;
+  font-size: 80%;
+}
+
+@media screen and (max-width: 322px) {
+  .filodimos-title{
+    font-weight: bold;
+    font-size: 72%;
+  }
+}
+

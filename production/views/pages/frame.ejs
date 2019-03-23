@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html dir=ltr>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <title><%= viewbag.title %></title>
+
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="fontawesome-free/js/all.min.js"></script>
+    <link href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/frame-style.css">
+    <link rel="stylesheet" type="text/css" href="css/res-table.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+
+    <meta property="og:title" content="<%= viewbag.title %>">
+    <meta property="og:description"
+        content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
+    <meta property="og:image" content="<%= viewbag.origin %>/img/filodimos-social-ypes.jpg">
+    <meta property="og:url" content="<%= viewbag.ogurl %>">
+    <meta name="twitter:title" content="<%= viewbag.title %>">
+    <meta name="twitter:description"
+        content="Δείτε όλες τις χρηματοδοτήσεις του προγράμματος ΦιλόΔημος Ι και ΙΙ διαδραστικά πάνω στο χάρτη της Ελλάδας">
+    <meta name="twitter:image" content="<%= viewbag.origin %>/img/filodimos-social-ypes.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body style='overflow:hidden'>
+    <!-- HEADER-->
+
+    <!--HEADER END-->
+    <!--BODY-->
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="filodimos-center-banner">
+                    <a href="http://www.ypes.gr" target="_blank">
+                        <img style='height: 100px; width: 100%; object-fit: contain'
+                            src="/img/ypes-logo-black.png" /></a>
+                </div>
+            </div>
+            <div class="col-6">
+                <a href="http://www.ypes.gr/el/Ministry/Actions/ProgrammaFilodimos/" target="_blank">
+                    <img style='height: 100px; width: 100%; object-fit: contain' src="/img/filodimos-logo.png" /></a>
+            </div>
+        </div>
+        <div class="row">
+            <div id="map" class="col-5">
+                <div id="mapLoading"
+                    style="top: 50%;right: 50%;position: absolute; height: 2rem; width: 2rem;display: none;"
+                    class="spinner-border text-primary" role="status">
+                    <span class="sr-only"> Επεξεργασία...</span>
+                </div>
+            </div>
+            <div class="col-6 offset-1">
+                <div style="text-align: center;">
+                    <span class="filodimos-title">ΕΙΔΙΚΟ ΠΡΟΓΡΑΜΜΑ ΕΝΙΣΧΥΣΗΣ ΔΗΜΩΝ</span>
+                    <br />
+                    <a href="<%= viewbag.origin %>" target="_blank" class="btn btn-filodimos">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <span class="font-weight-bold">Δείτε
+                            αναλυτικά</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="results" class="col-lg-12 offset-lg-0 col-md-12 offset-md-0 col-sm-12 offset-sm-0 col-12 offset-0">
+                <h4 id="region-title"></h4>
+                <h5 id="region-total"></h5>
+                <div id="graphs-container" class="graphs-container">
+                    <div id="chart" class="ct-golden-section"></div>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="modal fade" id="ypesMessage" tabindex="-1" role="dialog" aria-labelledby="ypesMessageTitle"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="text-align:center;" id="ypesMessageTitle">Μήνυμα Υπουργού
+                            Εσωτερικών<br />Αλέξη
+                            Χαρίτση</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="xaritsis" src="img/xaritsis.jpg" class="modal-img" />
+                        <p style="text-align:justify;">Η ενίσχυση της Τοπικής Αυτοδιοίκησης είναι στρατηγική επιλογή
+                            της κυβέρνησής μας αλλά και δέσμευσή μας προς τους πολίτες. Δέσμευση την οποία κάνουμε
+                            καθημερινά πράξη στο Υπουργείο Εσωτερικών, στηρίζοντας τους δήμους και της περιφέρειες
+                            με κάθε δυνατό μέσο. Στον κρίσιμο τομέα της χρηματοδότησης, αυξήσαμε τους πόρους προς
+                            τους ΟΤΑ και δημιουργήσαμε νέα καινοτόμα χρηματοδοτικά εργαλεία για τη στοχευμένη
+                            ενίσχυσή τους.</p>
+                        <p style="text-align:justify;">
+                            Σημαία αυτής της προσπάθειας είναι το Πρόγραμμα Φιλόδημος μέσα από το οποίο έχουν
+                            προβλευθεί περισσότερα από 2 δισ. ευρώ για τους δήμους όλης της χώρας. Πρόσθετοι πόροι που
+                            δίνουν για πρώτη φορά τη δυνατότητα στουςΟΤΑ να υλοποιήσουν βασικές υποδομές από την ύδρευση
+                            και την αποχέτευση μέχρι την αντιπλημμυρική προστασία και την αγροτική οδοποιία και από τα
+                            σχολικά κτίρια και τις αθλητικές εγκαταστάσεις μέχρι την αξιοποίηση του κτιριακού τους
+                            αποθέματος.</p>
+                        <p style="text-align:justify;">
+                            Υποδομές κρίσιμες για την ασφάλεια και την ποιότητα ζωής των πολιτών που χρονίζουν εδώ
+                            και δεκαετίες, τώρα ολοκληρώνονται, ενώ έργα που αναβαθμίζουν τις τοπικές αναπτυξιακές
+                            δυνατότητες παίρνουν τον δρόμο της υλοποίησης. Ο ΦιλόΔημος αλλάζει κυριολεκτικά, το
+                            πρόσωπο της Τοπικής Αυτοδιοίκησης, προς όφελος των πολιτών και των τοπικών κοινωνιών.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-filodimos" data-dismiss="modal">Κλείσιμο</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--BODY END-->
+    <!--FOOTER-->
+
+    <!--FOOTER END-->
+    <script src="js/axios.min.js"></script>
+    <script src="js/raphael.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="vendor/mobile-detect/mobile-detect.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/frame-perifereies.js"></script>
+    <script src="vendor/bootstrap/js/popper.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script>
+        $(window).bind('scroll', function () {
+            var navHeight = $('#filodimos-banner').height();
+            ($(window).scrollTop() > navHeight) ? $('#navbar').addClass('goToTop') : $('#navbar').removeClass('goToTop');
+            ($(window).scrollTop() > navHeight) ? $('#content').addClass('goToTopBody') : $('#content').removeClass('goToTopBody');
+        })
+
+        $(window).on('load', function () {
+            if (getUrlParameter('message') !== 'false') {
+                //$('#ypesMessage').modal('show');
+            }
+        });
+    </script>
+    <script>
+
+    </script>
+</body>
+
+</html>

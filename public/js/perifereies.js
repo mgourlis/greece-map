@@ -475,7 +475,7 @@ $('#shareMap').on('click', () => {
 
 $('#embededMap').on('click', () => {
     $('#embedCode').val('<embed width="100%" height="780" src="' +
-        baseUrl + 'frame.html?id=' +
+        baseUrl + 'frame?id=' +
         moveStack[moveStack.length - 1].id +
         '" />')
     $('#embedModal').modal('show')
